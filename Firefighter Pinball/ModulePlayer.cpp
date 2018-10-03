@@ -19,6 +19,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	bumper = CreateBumpers({330.0f,640.0f});
+	spring = CreateSpring();
 
 	return true;
 }
@@ -38,6 +39,20 @@ update_status ModulePlayer::Update()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		bumper->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
+	}
+
+
+	//Spring (DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+
+		if (springImpulse.y < 60.0f)
+			springImpulse.y += 0.5f;
+
+		spring->GetBodyA()->ApplyForce(springImpulse, { 6.0f, 0.0f }, true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+		springImpulse = { 0.0f,0.0f };
 	}
 
 	return UPDATE_CONTINUE;
@@ -70,6 +85,29 @@ b2RevoluteJoint * ModulePlayer::CreateBumpers(b2Vec2 pos)
 	b2RevoluteJoint* Revloute_joint = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
 
 	return Revloute_joint;
+}
+
+b2DistanceJoint * ModulePlayer::CreateSpring()
+{
+	PhysBody* upBody = App->physics->CreateRectangle(300, 250, 40, 50, b2_dynamicBody); //Up
+	PhysBody* downBody = App->physics->CreateRectangle(300, 300, 40, 16, b2_staticBody); //Down
+
+	PhysBody* wallLeft = App->physics->CreateRectangle(270, 270, 10, 80, b2_staticBody);
+	PhysBody* wallRigh = App->physics->CreateRectangle(330, 270, 10, 80, b2_staticBody);
+
+	b2DistanceJointDef distanceJointDef;
+	//distanceJointDef.Initialize(upBody->body, downBody->body, downBody->body->GetLocalCenter(), upBody->body->GetLocalCenter());
+	distanceJointDef.bodyA = upBody->body;
+	distanceJointDef.bodyB = downBody->body;
+	distanceJointDef.localAnchorA = upBody->body->GetLocalCenter();
+	distanceJointDef.localAnchorB = downBody->body->GetLocalCenter();
+	distanceJointDef.collideConnected = true;
+	distanceJointDef.frequencyHz = 4.0f;
+	distanceJointDef.dampingRatio = 0.5f;
+
+	b2DistanceJoint* distJoint = (b2DistanceJoint*)App->physics->world->CreateJoint(&distanceJointDef);
+
+	return distJoint;
 }
 
 

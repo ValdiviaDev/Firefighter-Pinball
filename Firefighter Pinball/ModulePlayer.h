@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "ModulePhysics.h"
 
 class b2RevoluteJoint;
 class b2DistanceJoint;
@@ -18,9 +19,12 @@ public:
 	bool CleanUp();
 
 	b2RevoluteJoint* CreateBumpers(b2Vec2 pos);
+	b2DistanceJoint* CreateSpring();
 
-public:
+private:
 
-	b2RevoluteJoint* bumper;
+	b2RevoluteJoint* bumper = nullptr;
+	b2DistanceJoint* spring = nullptr;
+	b2Vec2 springImpulse = { 0.0f,0.0f };
 
 };
