@@ -40,19 +40,6 @@ bool ModulePhysics::Start()
 	int y = SCREEN_HEIGHT / 1.5f;
 	int diameter = SCREEN_WIDTH / 2;
 
-	//b2BodyDef body;
-	//body.type = b2_staticBody;
-	//body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-	//
-	//big_ball = world->CreateBody(&body);
-
-	//b2CircleShape shape;
-	//shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
-	//
-	//b2FixtureDef fixture;
-	//fixture.shape = &shape;
-	//big_ball->CreateFixture(&fixture);
-
 	return true;
 }
 
@@ -75,10 +62,10 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyType)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = bodyType;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -99,10 +86,10 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType bodyType)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = bodyType;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -271,7 +258,7 @@ update_status ModulePhysics::PostUpdate()
 			// App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN
 			// test if the current body contains mouse position
 
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && b != big_ball) {
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 				if (f->TestPoint(mousePos))
 					bodyClicked = b;
 			}
