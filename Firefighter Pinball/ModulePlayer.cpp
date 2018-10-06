@@ -51,10 +51,10 @@ update_status ModulePlayer::Update()
 	//Spring (DOWN)
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 
-		if (springImpulse.y < 60.0f)
-			springImpulse.y += 0.5f;
+		if (springImpulse.y < 300.0f)
+			springImpulse.y += 20.0f;
 
-		spring->GetBodyA()->ApplyForce(springImpulse, { 6.0f, 0.0f }, true);
+		spring->GetBodyA()->ApplyForce(springImpulse, { PIXEL_TO_METERS(490), 0.0f }, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
@@ -95,11 +95,11 @@ b2RevoluteJoint * ModulePlayer::CreateBumpers(b2Vec2 pos)
 
 b2DistanceJoint * ModulePlayer::CreateSpring()
 {
-	PhysBody* upBody = App->physics->CreateRectangle(300, 250, 40, 50, b2_dynamicBody); //Up
-	PhysBody* downBody = App->physics->CreateRectangle(300, 300, 40, 16, b2_staticBody); //Down
+	PhysBody* upBody = App->physics->CreateRectangle(490, 800, 38, 73, b2_dynamicBody); //Up
+	PhysBody* downBody = App->physics->CreateRectangle(490, 820, 40, 16, b2_staticBody); //Down
 
-	PhysBody* wallLeft = App->physics->CreateRectangle(270, 270, 10, 80, b2_staticBody);
-	PhysBody* wallRigh = App->physics->CreateRectangle(330, 270, 10, 80, b2_staticBody);
+	//PhysBody* wallLeft = App->physics->CreateRectangle(460, 770, 10, 80, b2_staticBody);
+	//PhysBody* wallRigh = App->physics->CreateRectangle(520, 770, 10, 80, b2_staticBody);
 
 	b2DistanceJointDef distanceJointDef;
 	//distanceJointDef.Initialize(upBody->body, downBody->body, downBody->body->GetLocalCenter(), upBody->body->GetLocalCenter());
@@ -107,9 +107,9 @@ b2DistanceJoint * ModulePlayer::CreateSpring()
 	distanceJointDef.bodyB = downBody->body;
 	distanceJointDef.localAnchorA = upBody->body->GetLocalCenter();
 	distanceJointDef.localAnchorB = downBody->body->GetLocalCenter();
-	distanceJointDef.collideConnected = true;
-	distanceJointDef.frequencyHz = 4.0f;
-	distanceJointDef.dampingRatio = 0.5f;
+	distanceJointDef.collideConnected = false;
+	distanceJointDef.frequencyHz = 3.0f;
+	distanceJointDef.dampingRatio = 0.3f;
 
 	b2DistanceJoint* distJoint = (b2DistanceJoint*)App->physics->world->CreateJoint(&distanceJointDef);
 

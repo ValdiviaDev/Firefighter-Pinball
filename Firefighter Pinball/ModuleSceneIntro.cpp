@@ -29,10 +29,12 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	testScenario = App->textures->Load("pinball/textures/testScene.png");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
-	CreateStage(stage);
+	//Create the chains for the stage
+	//CreateStage(stage);
 
 	//Play stage music
 	App->audio->PlayMusic("pinball/audio/music/stageTheme.ogg");
@@ -51,6 +53,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	App->renderer->Blit(testScenario, 0, 0);
+
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
