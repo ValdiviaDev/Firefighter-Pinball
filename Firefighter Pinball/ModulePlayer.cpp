@@ -41,6 +41,12 @@ update_status ModulePlayer::Update()
 		bumper->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		App->audio->PlayFx(App->audio->GetFX().bumperUp, 0);
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+		App->audio->PlayFx(App->audio->GetFX().bumperDown, 0);
+
 
 	//Spring (DOWN)
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {

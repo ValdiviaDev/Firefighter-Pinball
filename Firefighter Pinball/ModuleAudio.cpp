@@ -47,6 +47,12 @@ bool ModuleAudio::Init()
 	return ret;
 }
 
+bool ModuleAudio::Start()
+{
+	ChargeFX();
+	return true;
+}
+
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {
@@ -165,4 +171,16 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void ModuleAudio::ChargeFX()
+{
+	gameSounds.bumperUp = LoadFx("pinball/audio/soundEffects/bumperUp.wav");
+	gameSounds.bumperDown = LoadFx("pinball/audio/soundEffects/bumperDown.wav");
+
+}
+
+GameSounds ModuleAudio::GetFX()
+{
+	return gameSounds;
 }

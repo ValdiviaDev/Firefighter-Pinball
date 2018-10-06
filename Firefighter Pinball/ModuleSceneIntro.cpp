@@ -34,6 +34,9 @@ bool ModuleSceneIntro::Start()
 
 	CreateStage(stage);
 
+	//Play stage music
+	App->audio->PlayMusic("pinball/audio/music/stageTheme.ogg");
+
 	return ret;
 }
 

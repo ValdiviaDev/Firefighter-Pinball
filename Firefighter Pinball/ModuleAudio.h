@@ -3,8 +3,15 @@
 
 #include "Module.h"
 #include "SDL_mixer\include\SDL_mixer.h"
+typedef unsigned int FX;
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
+
+
+struct GameSounds {
+	FX bumperUp = 0;
+	FX bumperDown = 0;
+};
 
 class ModuleAudio : public Module
 {
@@ -14,6 +21,7 @@ public:
 	~ModuleAudio();
 
 	bool Init();
+	bool Start();
 	bool CleanUp();
 
 	// Play a music file
@@ -25,10 +33,18 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	//Charge Sound Effects
+	void ChargeFX();
+
+	//Get a Sound Effect
+	GameSounds GetFX();
+
 private:
 
 	Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+
+	GameSounds gameSounds;
 };
 
 #endif // __ModuleAudio_H__
