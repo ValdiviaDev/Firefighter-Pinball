@@ -15,6 +15,7 @@ public:
 
 	SDL_Texture* const Load(const char* path);
 	void Unload(SDL_Texture* texture);
+	SDL_Texture* const	LoadSurface(SDL_Surface* surface);
 
 public:
 	p2List<SDL_Texture*> textures;
