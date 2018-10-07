@@ -18,12 +18,12 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	b2RevoluteJoint* CreateBumpers(b2Vec2 pos);
+	b2RevoluteJoint* CreateFlipper(b2Vec2 pos);
 	b2DistanceJoint* CreateSpring();
 
 private:
 
-	b2RevoluteJoint* bumper = nullptr;
+	b2RevoluteJoint* flipper = nullptr;
 	b2DistanceJoint* spring = nullptr;
 	b2Vec2 springImpulse = { 0.0f,0.0f };
 

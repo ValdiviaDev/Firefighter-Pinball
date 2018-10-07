@@ -18,7 +18,7 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	bumper = CreateBumpers({330.0f,640.0f});
+	flipper = CreateFlipper({340.0f,705.0f});
 	spring = CreateSpring();
 
 	return true;
@@ -33,12 +33,12 @@ update_status ModulePlayer::Update()
 	//	bumper->GetBodyA()->ApplyForce({ 0.0f, -400.0f }, { 0.0f, 0.0f }, true);
 	//}
 
-	float angle = bumper->GetJointAngle();
+	float angle = flipper->GetJointAngle();
 	if (angle < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
-		bumper->GetBodyA()->ApplyForce({ 0.0f, 370.0f }, { 0.0f, 0.0f }, true);
+		flipper->GetBodyA()->ApplyForce({ 0.0f, 370.0f }, { 0.0f, 0.0f }, true);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		bumper->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
+		flipper->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
@@ -72,19 +72,34 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
-b2RevoluteJoint * ModulePlayer::CreateBumpers(b2Vec2 pos)
+b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos)
 {
-	PhysBody* rect1 = App->physics->CreateRectangle(pos.x, pos.y, 140, 48, b2_dynamicBody); //Horizontal
-	PhysBody* rect0 = App->physics->CreateRectangle(pos.x, pos.y, 48, 100, b2_staticBody); //Vertical
+	b2Vec2 flipperPoints[7];
+	flipperPoints[0].Set(119, 50);
+	flipperPoints[1].Set(191, 12);
+	flipperPoints[2].Set(198, 11);
+	flipperPoints[3].Set(207, 20);
+	flipperPoints[4].Set(207, 28);
+	flipperPoints[5].Set(201, 33);
+	flipperPoints[6].Set(156, 51);
 
-	b2Vec2 setA = rect1->body->GetLocalCenter();
+	for (int i = 0; i < 8; i++) {
+		flipperPoints[i].x = PIXEL_TO_METERS(flipperPoints[i].x);
+		flipperPoints[i].y = PIXEL_TO_METERS(flipperPoints[i].y);
+	}
+
+	PhysBody* flip = App->physics->CreateShape(pos.x, pos.y, flipperPoints, 7, b2_dynamicBody);//Horizontal
+
+	PhysBody* circ = App->physics->CreateCircle(pos.x, pos.y, 6, b2_staticBody);
+
+	b2Vec2 setA = flip->body->GetLocalCenter();
 
 	b2RevoluteJointDef revoluteJointDef;
-	revoluteJointDef.bodyA = rect1->body;
-	revoluteJointDef.bodyB = rect0->body;
+	revoluteJointDef.bodyA = flip->body;
+	revoluteJointDef.bodyB = circ->body;
 	revoluteJointDef.collideConnected = false;
 	revoluteJointDef.localAnchorA = setA;
-	revoluteJointDef.localAnchorB.Set(-0.50f, 0.50f);
+	revoluteJointDef.localAnchorB.Set(-0.50f, 0.20f);
 	revoluteJointDef.lowerAngle = -45 * DEGTORAD;
 	revoluteJointDef.upperAngle = 0 * DEGTORAD;
 	revoluteJointDef.enableLimit = true;

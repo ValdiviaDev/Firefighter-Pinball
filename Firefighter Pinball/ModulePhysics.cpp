@@ -172,6 +172,30 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2Body
 	return pbody;
 }
 
+PhysBody * ModulePhysics::CreateShape(int x, int y, b2Vec2 points[], int size, b2BodyType bodyType)
+{
+	b2BodyDef body;
+	body.type = bodyType;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = App->physics->world->CreateBody(&body);
+	b2PolygonShape shape;
+	shape.Set(points, size);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = 0;
+
+	return pbody;
+}
+
 // 
 update_status ModulePhysics::PostUpdate()
 {
