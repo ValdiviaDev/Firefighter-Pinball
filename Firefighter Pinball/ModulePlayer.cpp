@@ -93,14 +93,14 @@ b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos)
 
 	PhysBody* circ = App->physics->CreateCircle(pos.x, pos.y, 6, b2_staticBody);
 
-	b2Vec2 setA = flip->body->GetLocalCenter();
+	b2Vec2 setB = circ->body->GetLocalCenter();
 
 	b2RevoluteJointDef revoluteJointDef;
 	revoluteJointDef.bodyA = flip->body;
 	revoluteJointDef.bodyB = circ->body;
 	revoluteJointDef.collideConnected = false;
-	revoluteJointDef.localAnchorA = setA;
-	revoluteJointDef.localAnchorB.Set(-0.50f, 0.20f);
+	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(73.0f), PIXEL_TO_METERS(12.0f));
+	revoluteJointDef.localAnchorB = setB;
 	revoluteJointDef.lowerAngle = -45 * DEGTORAD;
 	revoluteJointDef.upperAngle = 0 * DEGTORAD;
 	revoluteJointDef.enableLimit = true;
