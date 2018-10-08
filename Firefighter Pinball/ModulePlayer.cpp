@@ -75,18 +75,19 @@ bool ModulePlayer::CleanUp()
 b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos)
 {
 	b2Vec2 flipperPoints[7];
-	flipperPoints[0].Set(119, 50);
-	flipperPoints[1].Set(191, 12);
-	flipperPoints[2].Set(198, 11);
-	flipperPoints[3].Set(207, 20);
-	flipperPoints[4].Set(207, 28);
-	flipperPoints[5].Set(201, 33);
-	flipperPoints[6].Set(156, 51);
+	flipperPoints[0].Set(PIXEL_TO_METERS(1), PIXEL_TO_METERS(36));
+	flipperPoints[1].Set(PIXEL_TO_METERS(78), PIXEL_TO_METERS(-3));
+	flipperPoints[2].Set(PIXEL_TO_METERS(88), PIXEL_TO_METERS(3));
+	flipperPoints[3].Set(PIXEL_TO_METERS(91), PIXEL_TO_METERS(11));
+	flipperPoints[4].Set(PIXEL_TO_METERS(86), PIXEL_TO_METERS(21));
+	flipperPoints[5].Set(PIXEL_TO_METERS(34), PIXEL_TO_METERS(40));
+	flipperPoints[6].Set(PIXEL_TO_METERS(4), PIXEL_TO_METERS(40));
 
-	for (int i = 0; i < 8; i++) {
+	
+	/*for (int i = 0; i < 8; i++) {
 		flipperPoints[i].x = PIXEL_TO_METERS(flipperPoints[i].x);
 		flipperPoints[i].y = PIXEL_TO_METERS(flipperPoints[i].y);
-	}
+	}*/
 
 	PhysBody* flip = App->physics->CreateShape(pos.x, pos.y, flipperPoints, 7, b2_dynamicBody);//Horizontal
 
