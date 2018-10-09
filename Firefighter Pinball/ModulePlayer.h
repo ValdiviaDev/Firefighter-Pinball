@@ -40,7 +40,9 @@ public:
 
 private:
 
+	b2RevoluteJoint* flipperLeft = nullptr;
 	b2RevoluteJoint* flipperRight = nullptr;
+
 	b2DistanceJoint* spring = nullptr;
 
 	b2Vec2 springImpulse = { 0.0f,0.0f };

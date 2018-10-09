@@ -18,7 +18,8 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	flipperRight = CreateFlipper({340.0f,705.0f}, FLIP_RIGHT);
+	flipperLeft = CreateFlipper({ 162.0f,702.0f }, FLIP_LEFT);
+	flipperRight = CreateFlipper({332.0f,704.0f}, FLIP_RIGHT);
 	spring = CreateSpring();
 
 	return true;
@@ -74,10 +75,24 @@ b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos, FlipperType flipperTyp
 
 void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoints[7], b2Vec2& anchorA, float& lowerAngle, float& higherAngle)
 {
+
 	switch (flipperType)
 	{
 	case FLIP_LEFT:
+		flipperPoints[0].Set(PIXEL_TO_METERS(86), PIXEL_TO_METERS(37));
+		flipperPoints[1].Set(PIXEL_TO_METERS(13), PIXEL_TO_METERS(0));
+		flipperPoints[2].Set(PIXEL_TO_METERS(4), PIXEL_TO_METERS(1));
+		flipperPoints[3].Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(8));
+		flipperPoints[4].Set(PIXEL_TO_METERS(2), PIXEL_TO_METERS(18));
+		flipperPoints[5].Set(PIXEL_TO_METERS(48), PIXEL_TO_METERS(37));
+		flipperPoints[6].Set(PIXEL_TO_METERS(84), PIXEL_TO_METERS(40));
+
+		anchorA = { PIXEL_TO_METERS(13.0f), PIXEL_TO_METERS(12.0f) };
+		lowerAngle = (0 * DEGTORAD);
+		higherAngle = (45 * DEGTORAD);
 		break;
+
+
 	case FLIP_RIGHT:
 		flipperPoints[0].Set(PIXEL_TO_METERS(1), PIXEL_TO_METERS(36));
 		flipperPoints[1].Set(PIXEL_TO_METERS(78), PIXEL_TO_METERS(-3));
@@ -94,6 +109,7 @@ void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoin
 	case FLIP_RIGHT_UP:
 		break;
 	default:
+		//Right flipper
 		flipperPoints[0].Set(PIXEL_TO_METERS(1), PIXEL_TO_METERS(36));
 		flipperPoints[1].Set(PIXEL_TO_METERS(78), PIXEL_TO_METERS(-3));
 		flipperPoints[2].Set(PIXEL_TO_METERS(88), PIXEL_TO_METERS(3));
@@ -140,19 +156,28 @@ void ModulePlayer::UpdateFlippers()
 	//}
 
 	//Functionality
-	float angle = flipperRight->GetJointAngle();
-	if (angle < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
+	float angleLeft = flipperLeft->GetJointAngle();
+	if (angleLeft > (45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_Q) != KEY_REPEAT) {
+		flipperLeft->GetBodyA()->ApplyForce({ 0.0f, 200.0f }, { PIXEL_TO_METERS(237), 0.0f }, true);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		flipperLeft->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { PIXEL_TO_METERS(237), 0.0f }, true);
+	}
+
+	float angleRight = flipperRight->GetJointAngle();
+	if (angleRight < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
 		flipperRight->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		flipperRight->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
+
 	//Sound
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		App->audio->PlayFx(App->audio->GetFX().flipperUp, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP || App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
 		App->audio->PlayFx(App->audio->GetFX().flipperDown, 0);
 
 }
