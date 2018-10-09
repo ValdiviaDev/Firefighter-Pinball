@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Application_H__
+#define __Application_H__
 
 #include "p2List.h"
 #include "Globals.h"
@@ -13,6 +14,7 @@ class ModulePlayer;
 class ModuleSceneIntro;
 class ModulePhysics;
 class ModuleFonts;
+class ModuleGui;
 
 class Application
 {
@@ -26,6 +28,7 @@ public:
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
 	ModuleFonts* fonts;
+	ModuleGui* gui;
 
 private:
 
@@ -44,3 +47,7 @@ private:
 
 	void AddModule(Module* mod);
 };
+
+extern Application* App;
+
+#endif

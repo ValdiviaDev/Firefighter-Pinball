@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModuleGui.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,7 +30,6 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("assets/crate.png");
 	rick = App->textures->Load("assets/rick_head.png");
 	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
-
 	testScenario = App->textures->Load("assets/textures/testScene.png");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
@@ -40,6 +40,7 @@ bool ModuleSceneIntro::Start()
 	//Play stage music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
+	
 	return ret;
 }
 
@@ -54,6 +55,11 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	if (!scoreCharged) {
+		score = App->gui->CreateLabel({ 0,0 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
+		scoreCharged = true;
+	}
+
 	App->renderer->Blit(testScenario, 0, 0);
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)

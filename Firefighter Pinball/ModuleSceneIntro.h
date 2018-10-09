@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 class PhysBody;
+class UILabel;
 
 class ModuleSceneIntro : public Module
 {
@@ -35,4 +36,8 @@ public:
 	bool ray_on;
 
 	PhysBody* stage = nullptr;
+
+private:
+	bool scoreCharged = false;
+	UILabel* score;
 };
