@@ -27,10 +27,10 @@ bool ModulePlayer::Start()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	//Bumper (W)
+	//Flipper (W)
 	//if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
 	//
-	//	bumper->GetBodyA()->ApplyForce({ 0.0f, -400.0f }, { 0.0f, 0.0f }, true);
+	//	flipper->GetBodyA()->ApplyForce({ 0.0f, -400.0f }, { 0.0f, 0.0f }, true);
 	//}
 
 	float angle = flipper->GetJointAngle();
@@ -42,10 +42,10 @@ update_status ModulePlayer::Update()
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-		App->audio->PlayFx(App->audio->GetFX().bumperUp, 0);
+		App->audio->PlayFx(App->audio->GetFX().flipperUp, 0);
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-		App->audio->PlayFx(App->audio->GetFX().bumperDown, 0);
+		App->audio->PlayFx(App->audio->GetFX().flipperDown, 0);
 
 
 	//Spring (DOWN)

@@ -25,11 +25,12 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	circle = App->textures->Load("pinball/wheel.png"); 
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	testScenario = App->textures->Load("pinball/textures/testScene.png");
+	circle = App->textures->Load("assets/wheel.png"); 
+	box = App->textures->Load("assets/crate.png");
+	rick = App->textures->Load("assets/rick_head.png");
+	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
+
+	testScenario = App->textures->Load("assets/textures/testScene.png");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
@@ -37,7 +38,7 @@ bool ModuleSceneIntro::Start()
 	//CreateStage(stage);
 
 	//Play stage music
-	App->audio->PlayMusic("pinball/audio/music/stageTheme.ogg");
+	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
 	return ret;
 }

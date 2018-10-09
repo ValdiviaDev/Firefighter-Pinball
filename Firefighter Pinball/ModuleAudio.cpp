@@ -175,9 +175,19 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 void ModuleAudio::ChargeFX()
 {
-	gameSounds.bumperUp = LoadFx("pinball/audio/soundEffects/bumperUp.wav");
-	gameSounds.bumperDown = LoadFx("pinball/audio/soundEffects/bumperDown.wav");
-
+	gameSounds.flipperUp = LoadFx("assets/audio/soundEffects/flipperUp.wav");
+	gameSounds.flipperDown = LoadFx("assets/audio/soundEffects/flipperDown.wav");
+	gameSounds.bigBumper = LoadFx("assets/audio/soundEffects/bigBumper.wav");
+	gameSounds.cat1 = LoadFx("assets/audio/soundEffects/cat1.wav");
+    gameSounds.cat2 = LoadFx("assets/audio/soundEffects/cat2.wav");
+    gameSounds.liftUp = LoadFx("assets/audio/soundEffects/liftUp.wav");
+    gameSounds.lightBallSensor1	= LoadFx("assets/audio/soundEffects/lightBallSensor1.wav");
+	gameSounds.lightBallSensor2	= LoadFx("assets/audio/soundEffects/lightBallSensor2.wav");
+	gameSounds.sirenHose = LoadFx("assets/audio/soundEffects/sirenHose.wav");
+	gameSounds.smallBumper1 = LoadFx("assets/audio/soundEffects/smallBumper1.wav");
+	gameSounds.smallBumper2	= LoadFx("assets/audio/soundEffects/smallBumper2.wav");
+	gameSounds.springDown = LoadFx("assets/audio/soundEffects/springDown.wav");
+	gameSounds.springLaunch	= LoadFx("assets/audio/soundEffects/springLaunch.wav");
 }
 
 GameSounds ModuleAudio::GetFX()

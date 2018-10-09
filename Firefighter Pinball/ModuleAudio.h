@@ -9,8 +9,19 @@ typedef unsigned int FX;
 
 
 struct GameSounds {
-	FX bumperUp = 0;
-	FX bumperDown = 0;
+	FX flipperUp = 0;
+	FX flipperDown = 0;
+	FX bigBumper = 0;
+	FX cat1 = 0;
+	FX cat2 = 0;
+	FX liftUp = 0;
+	FX lightBallSensor1 = 0;
+	FX lightBallSensor2 = 0;
+	FX sirenHose = 0;
+	FX smallBumper1 = 0;
+	FX smallBumper2 = 0;
+	FX springDown = 0;
+	FX springLaunch = 0;
 };
 
 class ModuleAudio : public Module
