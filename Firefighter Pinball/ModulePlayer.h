@@ -42,6 +42,7 @@ private:
 
 	b2RevoluteJoint* flipperLeft = nullptr;
 	b2RevoluteJoint* flipperRight = nullptr;
+	b2RevoluteJoint* flipperRightUp = nullptr;
 
 	b2DistanceJoint* spring = nullptr;
 

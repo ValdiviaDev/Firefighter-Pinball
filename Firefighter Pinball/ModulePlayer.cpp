@@ -18,8 +18,11 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
+	//Create flippers
 	flipperLeft = CreateFlipper({ 162.0f,702.0f }, FLIP_LEFT);
 	flipperRight = CreateFlipper({332.0f,704.0f}, FLIP_RIGHT);
+	flipperRightUp = CreateFlipper({ 455.0f,297.0f }, FLIP_RIGHT_UP);
+	//Create spring
 	spring = CreateSpring();
 
 	return true;
@@ -107,6 +110,17 @@ void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoin
 		higherAngle = (0 * DEGTORAD);
 		break;
 	case FLIP_RIGHT_UP:
+		flipperPoints[0].Set(PIXEL_TO_METERS(1), PIXEL_TO_METERS(36));
+		flipperPoints[1].Set(PIXEL_TO_METERS(78), PIXEL_TO_METERS(-3));
+		flipperPoints[2].Set(PIXEL_TO_METERS(88), PIXEL_TO_METERS(3));
+		flipperPoints[3].Set(PIXEL_TO_METERS(91), PIXEL_TO_METERS(11));
+		flipperPoints[4].Set(PIXEL_TO_METERS(86), PIXEL_TO_METERS(21));
+		flipperPoints[5].Set(PIXEL_TO_METERS(34), PIXEL_TO_METERS(40));
+		flipperPoints[6].Set(PIXEL_TO_METERS(4), PIXEL_TO_METERS(40));
+
+		anchorA = { PIXEL_TO_METERS(73.0f), PIXEL_TO_METERS(12.0f) };
+		lowerAngle = (-25 * DEGTORAD);
+		higherAngle = (20 * DEGTORAD);
 		break;
 	default:
 		//Right flipper
@@ -156,14 +170,16 @@ void ModulePlayer::UpdateFlippers()
 	//}
 
 	//Functionality
+	//Left
 	float angleLeft = flipperLeft->GetJointAngle();
-	if (angleLeft > (45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_Q) != KEY_REPEAT) {
+	if (angleLeft < (45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_Q) != KEY_REPEAT) {
 		flipperLeft->GetBodyA()->ApplyForce({ 0.0f, 200.0f }, { PIXEL_TO_METERS(237), 0.0f }, true);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 		flipperLeft->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { PIXEL_TO_METERS(237), 0.0f }, true);
 	}
 
+	//Right
 	float angleRight = flipperRight->GetJointAngle();
 	if (angleRight < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
 		flipperRight->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
@@ -172,6 +188,14 @@ void ModulePlayer::UpdateFlippers()
 		flipperRight->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
+	//Right Up
+	float angleRightUp = flipperRightUp->GetJointAngle();
+	if (angleRightUp < (-25 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
+		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
+	}
 
 	//Sound
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
