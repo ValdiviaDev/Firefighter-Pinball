@@ -56,8 +56,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	if (!scoreCharged) {
-		score = App->gui->CreateLabel({ 0,0 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
-		scoreCharged = true;
+		ChargeScore();
 	}
 
 	App->renderer->Blit(testScenario, 0, 0);
@@ -273,4 +272,10 @@ void ModuleSceneIntro::CreateStage(PhysBody * stage)
 
 	App->physics->CreateChain(0, 0, scenePoints, 124, b2_staticBody);
 
+}
+
+void ModuleSceneIntro::ChargeScore()
+{
+	score = App->gui->CreateLabel({ 0,0 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
+	scoreCharged = true;
 }

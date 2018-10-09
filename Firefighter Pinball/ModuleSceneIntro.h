@@ -19,6 +19,8 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void CreateStage(PhysBody* stage);
 
+	void ChargeScore();
+
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;

@@ -8,6 +8,15 @@ class b2RevoluteJoint;
 class b2DistanceJoint;
 struct b2Vec2;
 
+enum FlipperType {
+	FLIP_NO_TYPE,
+	FLIP_LEFT,
+	FLIP_RIGHT,
+	FLIP_RIGHT_UP,
+	FLIP_MAX_TYPES
+};
+
+
 class ModulePlayer : public Module
 {
 public:
@@ -18,13 +27,22 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	b2RevoluteJoint* CreateFlipper(b2Vec2 pos);
+	//Flipper creation
+	b2RevoluteJoint* CreateFlipper(b2Vec2 pos, FlipperType flipperType);
+	void ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoints[7], b2Vec2& anchorA, float& lowerAngle, float& higherAngle);
+
 	b2DistanceJoint* CreateSpring();
+
+
+
+	void UpdateFlippers();
+	void UpdateSpring();
 
 private:
 
-	b2RevoluteJoint* flipper = nullptr;
+	b2RevoluteJoint* flipperRight = nullptr;
 	b2DistanceJoint* spring = nullptr;
+
 	b2Vec2 springImpulse = { 0.0f,0.0f };
 
 };
