@@ -4,6 +4,7 @@
 #include "ModulePhysics.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleRender.h"
 #include "ModuleAudio.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -18,12 +19,16 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
+	//Charge Textures
+	ChargeTextures();
+
 	//Create flippers
 	flipperLeft = CreateFlipper({ 162.0f,702.0f }, FLIP_LEFT);
 	flipperRight = CreateFlipper({332.0f,704.0f}, FLIP_RIGHT);
 	flipperRightUp = CreateFlipper({ 455.0f,297.0f }, FLIP_RIGHT_UP);
 	//Create spring
 	spring = CreateSpring();
+
 
 	return true;
 }
@@ -43,6 +48,12 @@ bool ModulePlayer::CleanUp()
 	LOG("Unloading player");
 
 	return true;
+}
+
+void ModulePlayer::ChargeTextures()
+{
+	flipLeft = App->textures->Load("assets/textures/flipperLeft.png");
+	flipRight = App->textures->Load("assets/textures/flipperRight.png");
 }
 
 b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos, FlipperType flipperType)
@@ -197,6 +208,9 @@ void ModulePlayer::UpdateFlippers()
 		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
+	//Print
+	PrintFlippers();
+
 	//Sound
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		App->audio->PlayFx(App->audio->GetFX().flipperUp, 0);
@@ -219,6 +233,30 @@ void ModulePlayer::UpdateSpring()
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 		springImpulse = { 0.0f,0.0f };
 	}
+}
+
+void ModulePlayer::PrintFlippers()
+{
+	//Left
+	PhysBody* flipLeftPB = (PhysBody*)flipperLeft->GetBodyA()->GetUserData();
+	iPoint pos = { 0, 0 };
+	flipLeftPB->GetPosition(pos.x, pos.y);
+
+	App->renderer->Blit(flipLeft, pos.x, pos.y, NULL, 1.0f, flipLeftPB->GetRotation(), 0, 0);
+
+	//Right
+	PhysBody* flipRightPB = (PhysBody*)flipperRight->GetBodyA()->GetUserData();
+	pos = { 0, 0 };
+	flipRightPB->GetPosition(pos.x, pos.y);
+
+	App->renderer->Blit(flipRight, pos.x, pos.y, NULL, 1.0f, flipRightPB->GetRotation(), 0, 0);
+
+	//Right Up
+	PhysBody* flipRightUpPB = (PhysBody*)flipperRightUp->GetBodyA()->GetUserData();
+	pos = { 0, 0 };
+	flipRightUpPB->GetPosition(pos.x, pos.y);
+
+	App->renderer->Blit(flipRight, pos.x, pos.y, NULL, 1.0f, flipRightUpPB->GetRotation(), 0, 0);
 }
 
 

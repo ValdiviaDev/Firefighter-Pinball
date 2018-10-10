@@ -7,6 +7,7 @@
 class b2RevoluteJoint;
 class b2DistanceJoint;
 struct b2Vec2;
+struct SDL_Texture;
 
 enum FlipperType {
 	FLIP_NO_TYPE,
@@ -27,16 +28,20 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	//Charge the textures
+	void ChargeTextures();
+
 	//Flipper creation
 	b2RevoluteJoint* CreateFlipper(b2Vec2 pos, FlipperType flipperType);
 	void ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoints[7], b2Vec2& anchorA, float& lowerAngle, float& higherAngle);
 
 	b2DistanceJoint* CreateSpring();
 
-
-
 	void UpdateFlippers();
 	void UpdateSpring();
+	void PrintFlippers();
+
+
 
 private:
 
@@ -47,5 +52,9 @@ private:
 	b2DistanceJoint* spring = nullptr;
 
 	b2Vec2 springImpulse = { 0.0f,0.0f };
+
+	//Textures
+	SDL_Texture* flipLeft;
+	SDL_Texture* flipRight;
 
 };

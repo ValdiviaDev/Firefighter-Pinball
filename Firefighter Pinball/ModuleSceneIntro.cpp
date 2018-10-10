@@ -30,7 +30,9 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("assets/crate.png");
 	rick = App->textures->Load("assets/rick_head.png");
 	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
-	testScenario = App->textures->Load("assets/textures/testScene.png");
+
+	//background = App->textures->Load("assets/textures/testScene.png");
+	background = App->textures->Load("assets/textures/background.png");
 
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
@@ -59,7 +61,7 @@ update_status ModuleSceneIntro::Update()
 		ChargeScore();
 	}
 
-	App->renderer->Blit(testScenario, 0, 0);
+	App->renderer->Blit(background, 0, 0);
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
