@@ -53,8 +53,8 @@ private:
 	b2Vec2 springImpulse = { 0.0f,0.0f };
 
 	//Textures
-	SDL_Texture* flipLeftTex;
-	SDL_Texture* flipRightTex;
-	SDL_Texture* springTex;
+	SDL_Texture* flipLeftTex = nullptr;
+	SDL_Texture* flipRightTex = nullptr;
+	SDL_Texture* springTex = nullptr;
 
 };

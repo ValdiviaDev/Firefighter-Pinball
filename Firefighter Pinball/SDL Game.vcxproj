@@ -88,6 +88,7 @@
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="p2SString.h" />
     <ClInclude Include="UIElem.h" />
+    <ClInclude Include="UIImage.h" />
     <ClInclude Include="UILabel.h" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +106,7 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="UIElem.cpp" />
+    <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="UILabel.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

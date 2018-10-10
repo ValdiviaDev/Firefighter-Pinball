@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "UIElem.h"
+#include "UIImage.h"
 #include "UILabel.h"
 
 enum FONT_TYPE {
@@ -35,6 +36,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	UIImage* CreateImage(iPoint pos, SDL_Rect image, const SDL_Texture* tex, Module* callback);
 	UILabel* CreateLabel(iPoint pos, p2SString text, _TTF_Font* font, SDL_Color colour, Module* callback);
 	
 	_TTF_Font* GetFont(FONT_TYPE font_name);

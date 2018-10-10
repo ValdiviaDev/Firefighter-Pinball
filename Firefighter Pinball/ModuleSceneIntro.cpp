@@ -42,7 +42,13 @@ bool ModuleSceneIntro::Start()
 	//Play stage music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
+	//Charge life count
+	lifeCountTex3 = App->textures->Load("assets/textures/gui/lifeCount3.png");
+	lifeCountTex2 = App->textures->Load("assets/textures/gui/lifeCount2.png");
+	lifeCountTex1 = App->textures->Load("assets/textures/gui/lifeCount1.png");
 	
+	App->gui->CreateImage({ 10,10 }, { 0,0,255,76 }, lifeCountTex3, this);
+
 	return ret;
 }
 
@@ -51,6 +57,9 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 	App->textures->Unload(background);
+	App->textures->Unload(lifeCountTex3);
+	App->textures->Unload(lifeCountTex2);
+	App->textures->Unload(lifeCountTex1);
 	return true;
 }
 
@@ -60,6 +69,7 @@ update_status ModuleSceneIntro::Update()
 	if (!scoreCharged) {
 		ChargeScore();
 	}
+
 
 	App->renderer->Blit(background, 0, 0);
 
@@ -278,6 +288,6 @@ void ModuleSceneIntro::CreateStage(PhysBody * stage)
 
 void ModuleSceneIntro::ChargeScore()
 {
-	score = App->gui->CreateLabel({ 0,0 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
+	score = App->gui->CreateLabel({ 150,40 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
 	scoreCharged = true;
 }

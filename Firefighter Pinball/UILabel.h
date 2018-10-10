@@ -1,5 +1,5 @@
-#ifndef __LABEL_H__
-#define __LABEL_H__
+#ifndef __UILabel_H__
+#define __UILabel_H__
 
 #include "p2SString.h"
 #include "UIElem.h"

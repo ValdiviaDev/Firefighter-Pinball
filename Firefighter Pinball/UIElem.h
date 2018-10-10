@@ -6,6 +6,7 @@
 
 enum UI_TYPE {
 	TYPE_NONE,
+	IMAGE,
 	LABEL,
 };
 

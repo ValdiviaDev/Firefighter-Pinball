@@ -42,4 +42,10 @@ public:
 private:
 	bool scoreCharged = false;
 	UILabel* score;
+
+	//gUI textures
+	SDL_Texture* lifeCountTex3 = nullptr;
+	SDL_Texture* lifeCountTex2 = nullptr;
+	SDL_Texture* lifeCountTex1 = nullptr;
+
 };

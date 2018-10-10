@@ -20,7 +20,7 @@ ModuleGui::~ModuleGui()
 bool ModuleGui::Start()
 {
 	//Mega_Man_2 = App->font->Load(Mega_Man_2_font_path.GetString(), 10);
-	scoreFont = App->fonts->Load("assets/Fonts/gomarice_game_continue_02.ttf", 70);
+	scoreFont = App->fonts->Load("assets/Fonts/gomarice_game_continue_02.ttf", 40);
 	p2List_item<UIElem*>* elem = UIElements.getFirst();
 	while (elem != nullptr) {
 		elem = nullptr;
@@ -69,6 +69,13 @@ bool ModuleGui::CleanUp()
 	return true;
 }
 
+
+UIImage* ModuleGui::CreateImage(iPoint pos, SDL_Rect image, const SDL_Texture * tex, Module * callback)
+{
+	UIImage* ret = new UIImage(pos, image, tex, callback);
+	UIElements.add(ret);
+	return ret;
+}
 
 UILabel* ModuleGui::CreateLabel(iPoint pos, p2SString text, _TTF_Font* font, SDL_Color colour, Module* callback) {
 	UILabel* ret = new UILabel(pos, text, font, colour, callback);
