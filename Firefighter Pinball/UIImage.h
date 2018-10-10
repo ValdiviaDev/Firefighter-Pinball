@@ -10,7 +10,7 @@ private:
 public:
 	UIImage(iPoint screen_area, SDL_Rect image, const SDL_Texture* tex, Module* callback);
 	void Draw();
-	void ChangeImage(SDL_Rect new_image);
+	void ChangeImage(SDL_Texture* newTex);
 };
 
 

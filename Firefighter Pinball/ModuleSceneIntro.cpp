@@ -47,7 +47,7 @@ bool ModuleSceneIntro::Start()
 	lifeCountTex2 = App->textures->Load("assets/textures/gui/lifeCount2.png");
 	lifeCountTex1 = App->textures->Load("assets/textures/gui/lifeCount1.png");
 	
-	App->gui->CreateImage({ 10,10 }, { 0,0,255,76 }, lifeCountTex3, this);
+	lifeCount = App->gui->CreateImage({ 10,10 }, { 0,0,255,76 }, lifeCountTex3, this);
 
 	return ret;
 }

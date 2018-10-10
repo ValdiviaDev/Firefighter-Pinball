@@ -6,6 +6,7 @@
 
 class PhysBody;
 class UILabel;
+class UIImage;
 
 class ModuleSceneIntro : public Module
 {
@@ -41,7 +42,8 @@ public:
 
 private:
 	bool scoreCharged = false;
-	UILabel* score;
+	UILabel* score = nullptr;
+	UIImage* lifeCount = nullptr;
 
 	//gUI textures
 	SDL_Texture* lifeCountTex3 = nullptr;
