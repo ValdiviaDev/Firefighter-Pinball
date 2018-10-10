@@ -40,8 +40,7 @@ public:
 	void UpdateFlippers();
 	void UpdateSpring();
 	void PrintFlippers();
-
-
+	void PrintSpring();
 
 private:
 
@@ -54,7 +53,8 @@ private:
 	b2Vec2 springImpulse = { 0.0f,0.0f };
 
 	//Textures
-	SDL_Texture* flipLeft;
-	SDL_Texture* flipRight;
+	SDL_Texture* flipLeftTex;
+	SDL_Texture* flipRightTex;
+	SDL_Texture* springTex;
 
 };

@@ -46,14 +46,18 @@ update_status ModulePlayer::Update()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-
+	//Unload textures
+	App->textures->Unload(flipLeftTex);
+	App->textures->Unload(flipRightTex);
+	App->textures->Unload(springTex);
 	return true;
 }
 
 void ModulePlayer::ChargeTextures()
 {
-	flipLeft = App->textures->Load("assets/textures/flipperLeft.png");
-	flipRight = App->textures->Load("assets/textures/flipperRight.png");
+	flipLeftTex = App->textures->Load("assets/textures/flipperLeft.png");
+	flipRightTex = App->textures->Load("assets/textures/flipperRight.png");
+	springTex = App->textures->Load("assets/textures/spring.png");
 }
 
 b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos, FlipperType flipperType)
@@ -233,6 +237,10 @@ void ModulePlayer::UpdateSpring()
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
 		springImpulse = { 0.0f,0.0f };
 	}
+
+	//Print spring
+	PrintSpring();
+
 }
 
 void ModulePlayer::PrintFlippers()
@@ -242,21 +250,30 @@ void ModulePlayer::PrintFlippers()
 	iPoint pos = { 0, 0 };
 	flipLeftPB->GetPosition(pos.x, pos.y);
 
-	App->renderer->Blit(flipLeft, pos.x, pos.y, NULL, 1.0f, flipLeftPB->GetRotation(), 0, 0);
+	App->renderer->Blit(flipLeftTex, pos.x, pos.y, NULL, 1.0f, flipLeftPB->GetRotation(), 0, 0);
 
 	//Right
 	PhysBody* flipRightPB = (PhysBody*)flipperRight->GetBodyA()->GetUserData();
 	pos = { 0, 0 };
 	flipRightPB->GetPosition(pos.x, pos.y);
 
-	App->renderer->Blit(flipRight, pos.x, pos.y, NULL, 1.0f, flipRightPB->GetRotation(), 0, 0);
+	App->renderer->Blit(flipRightTex, pos.x, pos.y, NULL, 1.0f, flipRightPB->GetRotation(), 0, 0);
 
 	//Right Up
 	PhysBody* flipRightUpPB = (PhysBody*)flipperRightUp->GetBodyA()->GetUserData();
 	pos = { 0, 0 };
 	flipRightUpPB->GetPosition(pos.x, pos.y);
 
-	App->renderer->Blit(flipRight, pos.x, pos.y, NULL, 1.0f, flipRightUpPB->GetRotation(), 0, 0);
+	App->renderer->Blit(flipRightTex, pos.x, pos.y, NULL, 1.0f, flipRightUpPB->GetRotation(), 0, 0);
+}
+
+void ModulePlayer::PrintSpring()
+{
+	PhysBody* springPB = (PhysBody*)spring->GetBodyA()->GetUserData();
+	iPoint pos = { 0, 0 };
+	springPB->GetPosition(pos.x, pos.y);
+
+	App->renderer->Blit(springTex, pos.x, pos.y, NULL);
 }
 
 
