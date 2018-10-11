@@ -49,15 +49,17 @@ public:
 	PhysBody* CreateShape(int x, int y, b2Vec2 points[], int size, b2BodyType bodyType);
 
 	//Joints
+	b2RevoluteJoint* CreateRevoluteJoint(b2Body* bodyA, b2Body* bodyB, b2Vec2 anchorA, b2Vec2 anchorB, float lowerAngle, float upperAngle, bool limitEnabled);
 	b2DistanceJoint* CreateDistanceJoint(b2Body* bodyA, b2Body* bodyB, float frequency, float dampRatio);
 	b2PrismaticJoint* CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
-	b2World* world;
+
 
 private:
 
+	b2World* world;
 	bool debug;
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;

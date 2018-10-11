@@ -196,6 +196,22 @@ PhysBody * ModulePhysics::CreateShape(int x, int y, b2Vec2 points[], int size, b
 	return pbody;
 }
 
+b2RevoluteJoint * ModulePhysics::CreateRevoluteJoint(b2Body * bodyA, b2Body * bodyB, b2Vec2 anchorA, b2Vec2 anchorB, float lowerAngle, float upperAngle, bool limitEnabled)
+{
+	b2RevoluteJointDef revoluteJointDef;
+	revoluteJointDef.bodyA = bodyA;
+	revoluteJointDef.bodyB = bodyB;
+	revoluteJointDef.collideConnected = false;
+	revoluteJointDef.localAnchorA = anchorA;
+	revoluteJointDef.localAnchorB = anchorB;
+	revoluteJointDef.lowerAngle = lowerAngle;
+	revoluteJointDef.upperAngle = upperAngle;
+	revoluteJointDef.enableLimit = limitEnabled;
+	b2RevoluteJoint* revoluteJoint = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
+
+	return revoluteJoint;
+}
+
 b2DistanceJoint * ModulePhysics::CreateDistanceJoint(b2Body * bodyA, b2Body * bodyB, float frequency, float dampRatio)
 {
 	b2DistanceJointDef distanceJointDef;

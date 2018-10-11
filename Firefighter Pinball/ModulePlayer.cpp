@@ -67,29 +67,20 @@ b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos, FlipperType flipperTyp
 	b2Vec2 flipperPoints[7];
 	b2Vec2 anchorA = { 0.0f,0.0f };
 	float lowerAngle = 0.0f;
-	float higherAngle = 0.0f;
+	float upperAngle = 0.0f;
 
-	ChargeFlipperData(flipperType, flipperPoints, anchorA, lowerAngle, higherAngle);
+	ChargeFlipperData(flipperType, flipperPoints, anchorA, lowerAngle, upperAngle);
 
-	//Define bodies
-	PhysBody* flip = App->physics->CreateShape(pos.x, pos.y, flipperPoints, 7, b2_dynamicBody);//Horizontal
+	//Create bodies
+	PhysBody* flip = App->physics->CreateShape(pos.x, pos.y, flipperPoints, 7, b2_dynamicBody);
 	PhysBody* circ = App->physics->CreateCircle(pos.x, pos.y, 6, b2_staticBody);
 
-	b2Vec2 setB = circ->body->GetLocalCenter();
+	b2Vec2 anchorB = circ->body->GetLocalCenter();
 
-	//Make revolute joint
-	b2RevoluteJointDef revoluteJointDef;
-	revoluteJointDef.bodyA = flip->body;
-	revoluteJointDef.bodyB = circ->body;
-	revoluteJointDef.collideConnected = false;
-	revoluteJointDef.localAnchorA = anchorA;
-	revoluteJointDef.localAnchorB = setB;
-	revoluteJointDef.lowerAngle = lowerAngle;
-	revoluteJointDef.upperAngle = higherAngle;
-	revoluteJointDef.enableLimit = true;
-	b2RevoluteJoint* Revloute_joint = (b2RevoluteJoint*)App->physics->world->CreateJoint(&revoluteJointDef);
+	//Create revolute joint
+	b2RevoluteJoint* revoluteJoint = App->physics->CreateRevoluteJoint(flip->body, circ->body, anchorA, anchorB, lowerAngle, upperAngle, true);
 
-	return Revloute_joint;
+	return revoluteJoint;
 }
 
 void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoints[7], b2Vec2& anchorA, float& lowerAngle, float& higherAngle)
@@ -157,9 +148,11 @@ void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoin
 
 PhysBody * ModulePlayer::CreateSpring(b2Vec2 anchorPos)
 {
+	//Create bodies
 	PhysBody* springBox = App->physics->CreateRectangle(anchorPos.x, anchorPos.y - 50, 38, 10, b2_dynamicBody); //Up
 	PhysBody* anchor = App->physics->CreateRectangle(anchorPos.x, anchorPos.y, 40, 5, b2_staticBody); //Down
 
+	//Create pertinent joints
 	b2DistanceJoint* distJoint = App->physics->CreateDistanceJoint(springBox->body, anchor->body, 3.0f, 0.3f);
 	b2PrismaticJoint* prismJoint = App->physics->CreatePrismaticJoint(springBox->body, anchor->body);
 
@@ -168,36 +161,31 @@ PhysBody * ModulePlayer::CreateSpring(b2Vec2 anchorPos)
 
 void ModulePlayer::UpdateFlippers()
 {
-	//if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-	//
-	//	flipper->GetBodyA()->ApplyForce({ 0.0f, -400.0f }, { 0.0f, 0.0f }, true);
-	//}
-
 	//Functionality
 	//Left
 	float angleLeft = flipperLeft->GetJointAngle();
-	if (angleLeft < (45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_Q) != KEY_REPEAT) {
+	if (angleLeft < (45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_LEFT) != KEY_REPEAT) {
 		flipperLeft->GetBodyA()->ApplyForce({ 0.0f, 200.0f }, { PIXEL_TO_METERS(237), 0.0f }, true);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
 		flipperLeft->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { PIXEL_TO_METERS(237), 0.0f }, true);
 	}
 
 	//Right
 	float angleRight = flipperRight->GetJointAngle();
-	if (angleRight < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
+	if (angleRight < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT) {
 		flipperRight->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 		flipperRight->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
 	//Right Up
 	float angleRightUp = flipperRightUp->GetJointAngle();
-	if (angleRightUp < (-25 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_W) != KEY_REPEAT) {
+	if (angleRightUp < (-25 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT) {
 		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
 		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
 	}
 
@@ -205,16 +193,17 @@ void ModulePlayer::UpdateFlippers()
 	PrintFlippers();
 
 	//Sound
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 		App->audio->PlayFx(App->audio->GetFX().flipperUp, 0);
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP || App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 		App->audio->PlayFx(App->audio->GetFX().flipperDown, 0);
 
 }
 
 void ModulePlayer::UpdateSpring()
 {
+	//Functionality
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 
 		if (springImpulse.y < 100.0f)
@@ -223,7 +212,15 @@ void ModulePlayer::UpdateSpring()
 		spring->body->ApplyForce(springImpulse, { PIXEL_TO_METERS(490), 0.0f }, true);
 	}
 
+	//Sound
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN) {
+		App->audio->PlayFx(App->audio->GetFX().springDown);
+	}
+
+	//Sound and functionality
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP) {
+		App->audio->PlayFx(App->audio->GetFX().springLaunch);
+
 		spring->body->ApplyForce({ 0.0f,-springImpulse.y * 5.0f }, { PIXEL_TO_METERS(490), 0.0f }, true);
 		springImpulse = { 0.0f,0.0f };
 	}
