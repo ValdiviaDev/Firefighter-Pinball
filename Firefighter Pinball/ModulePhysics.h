@@ -56,10 +56,9 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
+	b2World* world;
 
 private:
-
-	b2World* world;
 	bool debug;
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;

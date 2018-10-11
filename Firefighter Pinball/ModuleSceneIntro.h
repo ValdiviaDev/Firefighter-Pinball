@@ -22,12 +22,15 @@ public:
 
 	void ChargeScore();
 
+	void ChangeLifeCount();
+	bool hasLifeCountChanged = false;
+
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
-	PhysBody* sensor;
+	PhysBody* deathSensor;
 	bool sensed;
 
 	SDL_Texture* circle;

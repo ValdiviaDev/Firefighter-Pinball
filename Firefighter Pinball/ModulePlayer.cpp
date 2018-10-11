@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
+#include "ModuleSceneIntro.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -22,6 +23,9 @@ bool ModulePlayer::Start()
 	//Charge Textures
 	ChargeTextures();
 
+	//Create ball
+	ball = CreateBall();
+
 	//Create flippers
 	flipperLeft = CreateFlipper({ 162.0f,702.0f }, FLIP_LEFT);
 	flipperRight = CreateFlipper({332.0f,704.0f}, FLIP_RIGHT);
@@ -37,8 +41,14 @@ bool ModulePlayer::Start()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+	if(ball != nullptr)
+		PrintBall();
+
 	UpdateFlippers();
 	UpdateSpring();
+
+	if (resetBall)
+		ResetBall();
 
 	return UPDATE_CONTINUE;
 }
@@ -48,6 +58,7 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 	//Unload textures
+	App->textures->Unload(ballTex);
 	App->textures->Unload(flipLeftTex);
 	App->textures->Unload(flipRightTex);
 	App->textures->Unload(springTex);
@@ -56,9 +67,40 @@ bool ModulePlayer::CleanUp()
 
 void ModulePlayer::ChargeTextures()
 {
+	ballTex = App->textures->Load("assets/textures/ball.png");
 	flipLeftTex = App->textures->Load("assets/textures/flipperLeft.png");
 	flipRightTex = App->textures->Load("assets/textures/flipperRight.png");
 	springTex = App->textures->Load("assets/textures/spring.png");
+}
+
+PhysBody * ModulePlayer::CreateBall()
+{
+	ballInitialPos = { 495,750 };
+	PhysBody* ballPB = App->physics->CreateCircle(ballInitialPos.x, ballInitialPos.y, 12, b2_dynamicBody);
+	ballPB->listener = (Module*)App->scene_intro;
+	return ballPB;
+}
+
+PhysBody* ModulePlayer::GetBall()
+{
+	return ball;
+}
+
+void ModulePlayer::ResetBall()
+{
+	if (ball->body != nullptr) {
+		App->physics->world->DestroyBody(ball->body);
+		ball = nullptr;
+	}
+
+	lives--;
+	App->scene_intro->hasLifeCountChanged = true;
+
+	if (lives > 0)
+		ball = CreateBall();
+
+
+	resetBall = false;
 }
 
 b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos, FlipperType flipperType)
@@ -149,7 +191,7 @@ void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoin
 PhysBody * ModulePlayer::CreateSpring(b2Vec2 anchorPos)
 {
 	//Create bodies
-	PhysBody* springBox = App->physics->CreateRectangle(anchorPos.x, anchorPos.y - 50, 38, 10, b2_dynamicBody); //Up
+	PhysBody* springBox = App->physics->CreateRectangle(anchorPos.x, anchorPos.y - 50, 38, 15, b2_dynamicBody); //Up
 	PhysBody* anchor = App->physics->CreateRectangle(anchorPos.x, anchorPos.y, 40, 5, b2_staticBody); //Down
 
 	//Create pertinent joints
@@ -174,19 +216,19 @@ void ModulePlayer::UpdateFlippers()
 	//Right
 	float angleRight = flipperRight->GetJointAngle();
 	if (angleRight < (-45 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT) {
-		flipperRight->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
+		flipperRight->GetBodyA()->ApplyForce({ 0.0f, 70.0f }, { 0.0f, 0.0f }, true);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-		flipperRight->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
+		flipperRight->GetBodyA()->ApplyForce({ 0.0f, -70.0f }, { 0.0f, 0.0f }, true);
 	}
 
 	//Right Up
 	float angleRightUp = flipperRightUp->GetJointAngle();
 	if (angleRightUp < (-25 * DEGTORAD) && App->input->GetKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT) {
-		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, 100.0f }, { 0.0f, 0.0f }, true);
+		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, 70.0f }, { 0.0f, 0.0f }, true);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, -100.0f }, { 0.0f, 0.0f }, true);
+		flipperRightUp->GetBodyA()->ApplyForce({ 0.0f, -70.0f }, { 0.0f, 0.0f }, true);
 	}
 
 	//Print
@@ -228,6 +270,14 @@ void ModulePlayer::UpdateSpring()
 	//Print spring
 	PrintSpring();
 
+}
+
+void ModulePlayer::PrintBall()
+{
+	iPoint ballPos = { 0,0 };
+	ball->GetPosition(ballPos.x, ballPos.y);
+
+	App->renderer->Blit(ballTex, ballPos.x, ballPos.y, NULL, 1.0f, ball->GetRotation());
 }
 
 void ModulePlayer::PrintFlippers()

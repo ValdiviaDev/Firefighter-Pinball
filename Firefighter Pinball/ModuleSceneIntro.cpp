@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModulePlayer.h"
 #include "ModuleGui.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -34,7 +35,7 @@ bool ModuleSceneIntro::Start()
 	//background = App->textures->Load("assets/textures/testScene.png");
 	background = App->textures->Load("assets/textures/background.png");
 
-	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+	deathSensor = App->physics->CreateRectangleSensor(0, 850, 1200, 50);
 
 	//Create the chains for the stage
 	//CreateStage(stage);
@@ -70,6 +71,8 @@ update_status ModuleSceneIntro::Update()
 		ChargeScore();
 	}
 
+	if (hasLifeCountChanged)
+		ChangeLifeCount();
 
 	App->renderer->Blit(background, 0, 0);
 
@@ -82,7 +85,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 12, b2_dynamicBody));
+		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 25, b2_dynamicBody));
 		circles.getLast()->data->listener = this;
 	}
 
@@ -197,22 +200,11 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	int x, y;
 
-	App->audio->PlayFx(bonus_fx);
-
-	/*
-	if(bodyA)
-	{
-		bodyA->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+	if (bodyA == App->player->GetBall() && bodyB == deathSensor) {
+		App->player->resetBall = true;
 	}
 
-	if(bodyB)
-	{
-		bodyB->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}*/
 }
 
 void ModuleSceneIntro::CreateStage(PhysBody * stage)
@@ -290,4 +282,14 @@ void ModuleSceneIntro::ChargeScore()
 {
 	score = App->gui->CreateLabel({ 150,40 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
 	scoreCharged = true;
+}
+
+void ModuleSceneIntro::ChangeLifeCount()
+{
+	if (App->player->lives == 2)
+		lifeCount->ChangeImage(lifeCountTex2);
+	else if (App->player->lives == 1)
+		lifeCount->ChangeImage(lifeCountTex1);
+
+	hasLifeCountChanged = false;
 }
