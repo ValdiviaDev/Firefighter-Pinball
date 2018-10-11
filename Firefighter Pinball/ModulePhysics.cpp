@@ -204,7 +204,7 @@ b2DistanceJoint * ModulePhysics::CreateDistanceJoint(b2Body * bodyA, b2Body * bo
 	distanceJointDef.localAnchorA = bodyA->GetLocalCenter();
 	distanceJointDef.localAnchorB = bodyB->GetLocalCenter();
 
-	distanceJointDef.collideConnected = false;
+	distanceJointDef.collideConnected = true;
 
 	distanceJointDef.frequencyHz = frequency;
 	distanceJointDef.dampingRatio = dampRatio;
@@ -222,7 +222,7 @@ b2PrismaticJoint * ModulePhysics::CreatePrismaticJoint(b2Body * bodyA, b2Body * 
 	prismaticJointDef.localAnchorA = bodyA->GetLocalCenter();
 	prismaticJointDef.localAnchorB = bodyB->GetLocalCenter();
 	prismaticJointDef.localAxisA = { 0.0f,1.0f };
-	prismaticJointDef.collideConnected = false;
+	prismaticJointDef.collideConnected = true;
 
 	b2PrismaticJoint* prismaticJoint = (b2PrismaticJoint*)world->CreateJoint(&prismaticJointDef);
 

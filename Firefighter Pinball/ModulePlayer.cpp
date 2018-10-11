@@ -26,8 +26,9 @@ bool ModulePlayer::Start()
 	flipperLeft = CreateFlipper({ 162.0f,702.0f }, FLIP_LEFT);
 	flipperRight = CreateFlipper({332.0f,704.0f}, FLIP_RIGHT);
 	flipperRightUp = CreateFlipper({ 455.0f,297.0f }, FLIP_RIGHT_UP);
+
 	//Create spring
-	spring = CreateSpring();
+	spring = CreateSpring({ 495, 802 });
 
 
 	return true;
@@ -154,13 +155,10 @@ void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoin
 	}
 }
 
-PhysBody * ModulePlayer::CreateSpring()
+PhysBody * ModulePlayer::CreateSpring(b2Vec2 anchorPos)
 {
-	PhysBody* springBox = App->physics->CreateRectangle(490, 800, 38, 73, b2_dynamicBody); //Up
-	PhysBody* anchor = App->physics->CreateRectangle(490, 820, 40, 16, b2_staticBody); //Down
-
-	//PhysBody* wallLeft = App->physics->CreateRectangle(460, 770, 10, 80, b2_staticBody);
-	//PhysBody* wallRigh = App->physics->CreateRectangle(520, 770, 10, 80, b2_staticBody);
+	PhysBody* springBox = App->physics->CreateRectangle(anchorPos.x, anchorPos.y - 50, 38, 10, b2_dynamicBody); //Up
+	PhysBody* anchor = App->physics->CreateRectangle(anchorPos.x, anchorPos.y, 40, 5, b2_staticBody); //Down
 
 	b2DistanceJoint* distJoint = App->physics->CreateDistanceJoint(springBox->body, anchor->body, 3.0f, 0.3f);
 	b2PrismaticJoint* prismJoint = App->physics->CreatePrismaticJoint(springBox->body, anchor->body);
@@ -219,13 +217,14 @@ void ModulePlayer::UpdateSpring()
 {
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 
-		if (springImpulse.y < 2000.0f)
-			springImpulse.y += 100.0f;
+		if (springImpulse.y < 100.0f)
+			springImpulse.y += 2.0f;
 
 		spring->body->ApplyForce(springImpulse, { PIXEL_TO_METERS(490), 0.0f }, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP) {
+		spring->body->ApplyForce({ 0.0f,-springImpulse.y * 5.0f }, { PIXEL_TO_METERS(490), 0.0f }, true);
 		springImpulse = { 0.0f,0.0f };
 	}
 

@@ -35,7 +35,7 @@ public:
 	b2RevoluteJoint* CreateFlipper(b2Vec2 pos, FlipperType flipperType);
 	void ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoints[7], b2Vec2& anchorA, float& lowerAngle, float& higherAngle);
 
-	PhysBody* CreateSpring();
+	PhysBody* CreateSpring(b2Vec2 anchorPos);
 
 	void UpdateFlippers();
 	void UpdateSpring();
