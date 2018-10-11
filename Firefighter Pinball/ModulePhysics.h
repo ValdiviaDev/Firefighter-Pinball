@@ -48,6 +48,10 @@ public:
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType bodyType);
 	PhysBody* CreateShape(int x, int y, b2Vec2 points[], int size, b2BodyType bodyType);
 
+	//Joints
+	b2DistanceJoint* CreateDistanceJoint(b2Body* bodyA, b2Body* bodyB, float frequency, float dampRatio);
+	b2PrismaticJoint* CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
+
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 	b2World* world;

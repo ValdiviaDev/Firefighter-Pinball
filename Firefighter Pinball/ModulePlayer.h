@@ -35,7 +35,7 @@ public:
 	b2RevoluteJoint* CreateFlipper(b2Vec2 pos, FlipperType flipperType);
 	void ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoints[7], b2Vec2& anchorA, float& lowerAngle, float& higherAngle);
 
-	b2DistanceJoint* CreateSpring();
+	PhysBody* CreateSpring();
 
 	void UpdateFlippers();
 	void UpdateSpring();
@@ -48,9 +48,10 @@ private:
 	b2RevoluteJoint* flipperRight = nullptr;
 	b2RevoluteJoint* flipperRightUp = nullptr;
 
-	b2DistanceJoint* spring = nullptr;
-
 	b2Vec2 springImpulse = { 0.0f,0.0f };
+
+	//Spring
+	PhysBody* spring = nullptr;
 
 	//Textures
 	SDL_Texture* flipLeftTex = nullptr;

@@ -154,27 +154,18 @@ void ModulePlayer::ChargeFlipperData(FlipperType flipperType, b2Vec2 flipperPoin
 	}
 }
 
-b2DistanceJoint * ModulePlayer::CreateSpring()
+PhysBody * ModulePlayer::CreateSpring()
 {
-	PhysBody* upBody = App->physics->CreateRectangle(490, 800, 38, 73, b2_dynamicBody); //Up
-	PhysBody* downBody = App->physics->CreateRectangle(490, 820, 40, 16, b2_staticBody); //Down
+	PhysBody* springBox = App->physics->CreateRectangle(490, 800, 38, 73, b2_dynamicBody); //Up
+	PhysBody* anchor = App->physics->CreateRectangle(490, 820, 40, 16, b2_staticBody); //Down
 
 	//PhysBody* wallLeft = App->physics->CreateRectangle(460, 770, 10, 80, b2_staticBody);
 	//PhysBody* wallRigh = App->physics->CreateRectangle(520, 770, 10, 80, b2_staticBody);
 
-	b2DistanceJointDef distanceJointDef;
-	//distanceJointDef.Initialize(upBody->body, downBody->body, downBody->body->GetLocalCenter(), upBody->body->GetLocalCenter());
-	distanceJointDef.bodyA = upBody->body;
-	distanceJointDef.bodyB = downBody->body;
-	distanceJointDef.localAnchorA = upBody->body->GetLocalCenter();
-	distanceJointDef.localAnchorB = downBody->body->GetLocalCenter();
-	distanceJointDef.collideConnected = false;
-	distanceJointDef.frequencyHz = 3.0f;
-	distanceJointDef.dampingRatio = 0.3f;
+	b2DistanceJoint* distJoint = App->physics->CreateDistanceJoint(springBox->body, anchor->body, 3.0f, 0.3f);
+	b2PrismaticJoint* prismJoint = App->physics->CreatePrismaticJoint(springBox->body, anchor->body);
 
-	b2DistanceJoint* distJoint = (b2DistanceJoint*)App->physics->world->CreateJoint(&distanceJointDef);
-
-	return distJoint;
+	return springBox;
 }
 
 void ModulePlayer::UpdateFlippers()
@@ -228,10 +219,10 @@ void ModulePlayer::UpdateSpring()
 {
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
 
-		if (springImpulse.y < 300.0f)
-			springImpulse.y += 20.0f;
+		if (springImpulse.y < 2000.0f)
+			springImpulse.y += 100.0f;
 
-		spring->GetBodyA()->ApplyForce(springImpulse, { PIXEL_TO_METERS(490), 0.0f }, true);
+		spring->body->ApplyForce(springImpulse, { PIXEL_TO_METERS(490), 0.0f }, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
@@ -269,9 +260,8 @@ void ModulePlayer::PrintFlippers()
 
 void ModulePlayer::PrintSpring()
 {
-	PhysBody* springPB = (PhysBody*)spring->GetBodyA()->GetUserData();
 	iPoint pos = { 0, 0 };
-	springPB->GetPosition(pos.x, pos.y);
+	spring->GetPosition(pos.x, pos.y);
 
 	App->renderer->Blit(springTex, pos.x, pos.y, NULL);
 }
