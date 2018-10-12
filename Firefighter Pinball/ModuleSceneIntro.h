@@ -8,6 +8,14 @@ class PhysBody;
 class UILabel;
 class UIImage;
 
+struct Sensors {
+	PhysBody* deathSensor = nullptr;
+	PhysBody* ballSensor[14];
+	PhysBody* starSensor[3];
+	PhysBody* liftUpSensor[2];
+	PhysBody* stairsSensor = nullptr;
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -19,6 +27,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void CreateStage(PhysBody* stage);
+	void CreateSensors();
 
 	void ChargeScore();
 
@@ -30,17 +39,20 @@ public:
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
-	PhysBody* deathSensor;
+
+	//Sensors
+	Sensors sensor;
 	bool sensed;
 
+	//Testing
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;
-	SDL_Texture* background = nullptr;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
 
+	SDL_Texture* background = nullptr;
 	PhysBody* stage = nullptr;
 
 private:

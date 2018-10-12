@@ -86,6 +86,31 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyT
 	return pbody;
 }
 
+PhysBody * ModulePhysics::CreateCircleSensor(int x, int y, int radius)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+	fixture.isSensor = true;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
+
 PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType bodyType)
 {
 	b2BodyDef body;
@@ -384,7 +409,10 @@ bool ModulePhysics::CleanUp()
 	LOG("Destroying physics world");
 
 	// Delete the whole physics world!
-	delete world;
+	if (world != nullptr) {
+		delete world;
+		world = nullptr;
+	}
 
 	return true;
 }

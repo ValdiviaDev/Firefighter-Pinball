@@ -35,10 +35,9 @@ bool ModuleSceneIntro::Start()
 	//background = App->textures->Load("assets/textures/testScene.png");
 	background = App->textures->Load("assets/textures/background.png");
 
-	deathSensor = App->physics->CreateRectangleSensor(0, 850, 1200, 50);
-
 	//Create the chains for the stage
 	//CreateStage(stage);
+	CreateSensors();
 
 	//Play stage music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
@@ -201,7 +200,7 @@ update_status ModuleSceneIntro::Update()
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 
-	if (bodyA == App->player->GetBall() && bodyB == deathSensor) {
+	if (bodyA == App->player->GetBall() && bodyB == sensor.deathSensor) {
 		App->player->resetBall = true;
 	}
 
@@ -275,6 +274,44 @@ void ModuleSceneIntro::CreateStage(PhysBody * stage)
 	};
 
 	App->physics->CreateChain(0, 0, scenePoints, 124, b2_staticBody);
+
+}
+
+void ModuleSceneIntro::CreateSensors()
+{
+	//Death barrier
+	sensor.deathSensor = App->physics->CreateRectangleSensor(0, 850, 1200, 50);
+
+	//Balls
+	sensor.ballSensor[0] = App->physics->CreateCircleSensor(138, 183, 11);
+	sensor.ballSensor[1] = App->physics->CreateCircleSensor(163, 175, 11);
+	sensor.ballSensor[2] = App->physics->CreateCircleSensor(189, 166, 11);
+	sensor.ballSensor[3] = App->physics->CreateCircleSensor(316, 166, 11);
+	sensor.ballSensor[4] = App->physics->CreateCircleSensor(341, 175, 11);
+	sensor.ballSensor[5] = App->physics->CreateCircleSensor(366, 183, 11);
+																	   
+	sensor.ballSensor[6] = App->physics->CreateCircleSensor(270, 322, 11);
+	sensor.ballSensor[7] = App->physics->CreateCircleSensor(295, 313, 11);
+	sensor.ballSensor[8] = App->physics->CreateCircleSensor(320, 306, 11);
+
+	sensor.ballSensor[9] = App->physics->CreateCircleSensor(391, 369, 11);
+	sensor.ballSensor[10] = App->physics->CreateCircleSensor(391, 395, 11);
+	sensor.ballSensor[11] = App->physics->CreateCircleSensor(391, 421, 11);
+
+	sensor.ballSensor[12] = App->physics->CreateCircleSensor(101, 606, 11);
+	sensor.ballSensor[13] = App->physics->CreateCircleSensor(400, 606, 11);
+
+	//Star sensors
+	sensor.starSensor[0] = App->physics->CreateRectangleSensor(212, 117, 23, 23);
+	sensor.starSensor[1] = App->physics->CreateRectangleSensor(250, 117, 23, 23);
+	sensor.starSensor[2] = App->physics->CreateRectangleSensor(288, 117, 23, 23);
+
+	//Lift up sensors
+	sensor.liftUpSensor[0] = App->physics->CreateRectangleSensor(61, 746, 30, 19);
+	sensor.liftUpSensor[1] = App->physics->CreateRectangleSensor(442, 746, 30, 19);
+
+	//Stair sensor
+	sensor.stairsSensor = App->physics->CreateCircleSensor(107, 125, 20);
 
 }
 
