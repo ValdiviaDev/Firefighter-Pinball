@@ -38,6 +38,7 @@ bool ModuleSceneIntro::Start()
 	//Create the chains for the stage
 	//CreateStage(stage);
 	CreateSensors();
+	CreateBumpers();
 
 	//Play stage music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
@@ -274,6 +275,64 @@ void ModuleSceneIntro::CreateStage(PhysBody * stage)
 	};
 
 	App->physics->CreateChain(0, 0, scenePoints, 124, b2_staticBody);
+
+}
+
+void ModuleSceneIntro::CreateBumpers()
+{
+	//Bumper balls
+	bumper.bumperBall[0] = App->physics->CreateCircle(208, 219, 24, b2_staticBody);
+	bumper.bumperBall[1] = App->physics->CreateCircle(277, 192, 24, b2_staticBody);
+	bumper.bumperBall[2] = App->physics->CreateCircle(289, 265, 24, b2_staticBody);
+
+	//Big bumpers
+	int leftBumpCoords[20] = {
+		0, 77,
+		0, 5,
+		3, 1,
+		7, 1,
+		10, 5,
+		47, 92,
+		47, 98,
+		44, 101,
+		40, 101,
+		4, 81
+	};
+	bumper.bigBumper[0] = App->physics->CreateChain(119, 547, leftBumpCoords, 20, b2_staticBody);
+
+	int rightBumpCoords[20] = {
+		0, 93,
+		36, 6,
+		40, 1,
+		43, 1,
+		45, 4,
+		48, 74,
+		46, 79,
+		8, 100,
+		4, 100,
+		1, 98
+	};
+	bumper.bigBumper[1] = App->physics->CreateChain(333, 547, rightBumpCoords, 20, b2_staticBody);
+
+	int rightUpBumpCoords[26] = {
+	0, 8,
+	0, 3,
+	3, 1,
+	7, 2,
+	70, 75,
+	69, 82,
+	63, 83,
+	58, 85,
+	54, 88,
+	51, 92,
+	48, 97,
+	44, 97,
+	3, 15
+	};
+	bumper.bigBumper[2] = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody);
+
+	//Clock
+	bumper.clock = App->physics->CreateCircle(202, 362, 24, b2_staticBody);
 
 }
 

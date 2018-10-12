@@ -8,6 +8,12 @@ class PhysBody;
 class UILabel;
 class UIImage;
 
+struct Bumpers {
+	PhysBody* bumperBall[3];
+	PhysBody* bigBumper[3];
+	PhysBody* clock = nullptr;
+};
+
 struct Sensors {
 	PhysBody* deathSensor = nullptr;
 	PhysBody* ballSensor[14];
@@ -25,8 +31,12 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
+
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+
+	//Create
 	void CreateStage(PhysBody* stage);
+	void CreateBumpers();
 	void CreateSensors();
 
 	void ChargeScore();
@@ -40,7 +50,8 @@ public:
 	p2List<PhysBody*> ricks;
 
 
-	//Sensors
+	//Sensors & Bumpers
+	Bumpers bumper;
 	Sensors sensor;
 	bool sensed;
 
