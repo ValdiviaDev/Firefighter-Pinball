@@ -67,9 +67,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	if (!scoreCharged) {
+	if (!scoreCharged)
 		ChargeScore();
-	}
 
 	if (hasLifeCountChanged)
 		ChangeLifeCount();
@@ -200,9 +199,64 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	PhysBody* ball = App->player->GetBall();
 
-	if (bodyA == App->player->GetBall() && bodyB == sensor.deathSensor) {
+	//Death sensor
+	if (bodyA == ball && bodyB == sensor.deathSensor) {
 		App->player->resetBall = true;
+	}
+
+	//Bumpers
+	//Small bumpers
+	for (int i = 0; i < 4; i++) {
+		if (bodyA == ball && bodyB == bumper.bumperBall[i]) {
+			App->audio->PlayFx(App->audio->GetFX().smallBumper1);
+			score += 30;
+			ChangeScoreLabel();
+		}
+	}
+
+	//Big bumpers
+	for (int i = 0; i < 3; i++) {
+		if (bodyA == ball && bodyB == bumper.bigBumper[i]) {
+			App->audio->PlayFx(App->audio->GetFX().bigBumper);
+			score += 50;
+			ChangeScoreLabel();
+		}
+	}
+
+	//Sensors
+	//Lift up
+	for (int i = 0; i < 2; i++) {
+		if (bodyA == ball && bodyB == sensor.liftUpSensor[i]) {
+			ball->body->ApplyForce({ 0.0f,-150.0f }, { 0.0f,0.0f }, true);
+			App->audio->PlayFx(App->audio->GetFX().liftUp);
+		}
+	}
+
+	//Balls
+	for (int i = 0; i < 14; i++) {
+		if (bodyA == ball && bodyB == sensor.ballSensor[i]) {
+			App->audio->PlayFx(App->audio->GetFX().lightBallSensor1);
+			score += 10;
+			ChangeScoreLabel();
+		}
+	}
+
+	//Stars
+	for (int i = 0; i < 3; i++) {
+		if (bodyA == ball && bodyB == sensor.starSensor[i]) {
+			App->audio->PlayFx(App->audio->GetFX().lightBallSensor2);
+			score += 20;
+			ChangeScoreLabel();
+		}
+	}
+
+	//Stair
+	if (bodyA == ball && bodyB == sensor.stairsSensor) {
+		App->audio->PlayFx(App->audio->GetFX().sirenHose);
+		score += 200;
+		ChangeScoreLabel();
 	}
 
 }
@@ -284,6 +338,7 @@ void ModuleSceneIntro::CreateBumpers()
 	bumper.bumperBall[0] = App->physics->CreateCircle(208, 219, 24, b2_staticBody);
 	bumper.bumperBall[1] = App->physics->CreateCircle(277, 192, 24, b2_staticBody);
 	bumper.bumperBall[2] = App->physics->CreateCircle(289, 265, 24, b2_staticBody);
+	bumper.bumperBall[3] = App->physics->CreateCircle(202, 362, 24, b2_staticBody);
 
 	//Big bumpers
 	int leftBumpCoords[20] = {
@@ -331,9 +386,6 @@ void ModuleSceneIntro::CreateBumpers()
 	};
 	bumper.bigBumper[2] = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody);
 
-	//Clock
-	bumper.clock = App->physics->CreateCircle(202, 362, 24, b2_staticBody);
-
 }
 
 void ModuleSceneIntro::CreateSensors()
@@ -376,7 +428,7 @@ void ModuleSceneIntro::CreateSensors()
 
 void ModuleSceneIntro::ChargeScore()
 {
-	score = App->gui->CreateLabel({ 150,40 }, "000000", App->gui->GetFont(FONT), { 0,255,0,255 }, this);
+	scoreLabel = App->gui->CreateLabel({ 150,40 }, "000000", App->gui->GetFont(FONT), { 255,255,255,255 }, this);
 	scoreCharged = true;
 }
 
@@ -388,4 +440,20 @@ void ModuleSceneIntro::ChangeLifeCount()
 		lifeCount->ChangeImage(lifeCountTex1);
 
 	hasLifeCountChanged = false;
+}
+
+void ModuleSceneIntro::ChangeScoreLabel()
+{
+	if (score < 100) 
+		scoreLabel->ChangeText((p2SString("0000%i", (score))));
+	else if (score < 1000)
+		scoreLabel->ChangeText((p2SString("000%i", (score))));
+	else if (score < 10000)
+		scoreLabel->ChangeText((p2SString("00%i", (score))));
+	else if (score < 100000)
+		scoreLabel->ChangeText((p2SString("0%i", (score))));
+	else if (score < 1000000)
+		scoreLabel->ChangeText((p2SString("%i", (score))));
+	else if (score > 999999)
+		scoreLabel->ChangeText((p2SString("%i", (999999))));
 }

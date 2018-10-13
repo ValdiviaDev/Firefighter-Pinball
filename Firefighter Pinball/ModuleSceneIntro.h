@@ -9,9 +9,8 @@ class UILabel;
 class UIImage;
 
 struct Bumpers {
-	PhysBody* bumperBall[3];
+	PhysBody* bumperBall[4];
 	PhysBody* bigBumper[3];
-	PhysBody* clock = nullptr;
 };
 
 struct Sensors {
@@ -42,6 +41,7 @@ public:
 	void ChargeScore();
 
 	void ChangeLifeCount();
+	void ChangeScoreLabel();
 	bool hasLifeCountChanged = false;
 
 public:
@@ -67,8 +67,11 @@ public:
 	PhysBody* stage = nullptr;
 
 private:
+	
+	uint score = 0;
+
 	bool scoreCharged = false;
-	UILabel* score = nullptr;
+	UILabel* scoreLabel = nullptr;
 	UIImage* lifeCount = nullptr;
 
 	//gUI textures
