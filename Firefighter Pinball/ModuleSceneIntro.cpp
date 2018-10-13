@@ -213,6 +213,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			App->audio->PlayFx(App->audio->GetFX().smallBumper1);
 			score += 30;
 			ChangeScoreLabel();
+			ball->body->ApplyLinearImpulse({ -ball->body->GetLinearVelocity().x * 0.2f,-ball->body->GetLinearVelocity().y * 0.2f }, { 0.0f,0.0f }, true);
 		}
 	}
 
@@ -229,7 +230,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	//Lift up
 	for (int i = 0; i < 2; i++) {
 		if (bodyA == ball && bodyB == sensor.liftUpSensor[i]) {
-			ball->body->ApplyForce({ 0.0f,-150.0f }, { 0.0f,0.0f }, true);
+			ball->body->ApplyForceToCenter({ 0.0f,-150.0f }, true);
 			App->audio->PlayFx(App->audio->GetFX().liftUp);
 		}
 	}
@@ -370,19 +371,19 @@ void ModuleSceneIntro::CreateBumpers()
 	bumper.bigBumper[1] = App->physics->CreateChain(333, 547, rightBumpCoords, 20, b2_staticBody);
 
 	int rightUpBumpCoords[26] = {
-	0, 8,
-	0, 3,
-	3, 1,
-	7, 2,
-	70, 75,
-	69, 82,
-	63, 83,
-	58, 85,
-	54, 88,
-	51, 92,
-	48, 97,
-	44, 97,
-	3, 15
+		0, 8,
+		0, 3,
+		3, 1,
+		7, 2,
+		70, 75,
+		69, 82,
+		63, 83,
+		58, 85,
+		54, 88,
+		51, 92,
+		48, 97,
+		44, 97,
+		3, 15
 	};
 	bumper.bigBumper[2] = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody);
 
