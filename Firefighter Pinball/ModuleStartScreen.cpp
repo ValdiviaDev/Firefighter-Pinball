@@ -30,8 +30,10 @@ bool ModuleStartScreen::Start()
 	bool ret = true;
 	TexIntroScreen = App->textures->Load("assets/textures/Start_Screen.png");
 	
-	//App->gui->Disable();
-
+	//Play stage music
+	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
+	App->scene_intro->Disable();
+	App->player->Disable();
 	
 	
 	return ret;
@@ -43,7 +45,7 @@ bool ModuleStartScreen::CleanUp()
 {
 	LOG("Unloading Intro Scene");
 	App->textures->Unload(TexIntroScreen);
-
+	App->start_scene->Disable();
 
 	return true;
 }

@@ -29,6 +29,7 @@ bool ModuleSceneIntro::Start()
 
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
+	App->start_scene->Disable();
 
 	circle = App->textures->Load("assets/wheel.png"); 
 	box = App->textures->Load("assets/crate.png");
@@ -43,8 +44,8 @@ bool ModuleSceneIntro::Start()
 	CreateSensors();
 	CreateBumpers();
 
-	//Play stage music
-	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
+	//Play stage music													//AHORA ESTA EN LA PRIMERA PANTALLA
+	//App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
 	//Charge life count
 	lifeCountTex3 = App->textures->Load("assets/textures/gui/lifeCount3.png");
@@ -64,6 +65,8 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(lifeCountTex3);
 	App->textures->Unload(lifeCountTex2);
 	App->textures->Unload(lifeCountTex1);
+
+
 	return true;
 }
 

@@ -46,8 +46,9 @@ Application::Application()
 	
 	// Scenes
 
-	AddModule(scene_intro);
 	AddModule(start_scene);
+	AddModule(scene_intro);
+	
 	// Player
 	AddModule(player);
 
