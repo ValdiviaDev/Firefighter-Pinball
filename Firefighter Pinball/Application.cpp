@@ -1,4 +1,3 @@
-
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -11,6 +10,7 @@
 #include "ModuleFonts.h"
 #include "ModuleGui.h"
 #include "ModuleFadeToBlack.h"
+#include "ModuleStartScreen.h"
 
 #include "Application.h"
 
@@ -27,6 +27,7 @@ Application::Application()
 	fonts = new ModuleFonts(this);
 	gui = new ModuleGui(this);
 	fade = new ModuleFadeToBlack(this);
+	start_scene = new ModuleStartScreen(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -41,10 +42,12 @@ Application::Application()
 	AddModule(audio);
 	AddModule(fonts);
 
+
 	
 	// Scenes
+
 	AddModule(scene_intro);
-	
+	AddModule(start_scene);
 	// Player
 	AddModule(player);
 

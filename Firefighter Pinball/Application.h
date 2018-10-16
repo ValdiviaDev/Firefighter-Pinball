@@ -16,6 +16,7 @@ class ModulePhysics;
 class ModuleFonts;
 class ModuleGui;
 class ModuleFadeToBlack;
+class ModuleStartScreen;
 
 class Application
 {
@@ -31,6 +32,7 @@ public:
 	ModuleFonts* fonts;
 	ModuleGui* gui;
 	ModuleFadeToBlack* fade;
+	ModuleStartScreen* start_scene;
 
 private:
 
