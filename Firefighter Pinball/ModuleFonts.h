@@ -15,7 +15,7 @@ class ModuleFonts : public Module
 {
 public:
 
-	ModuleFonts(Application* app, bool start_enabled = true);
+	ModuleFonts(Application* app, bool start_enabled = false);
 
 	// Destructor
 	virtual ~ModuleFonts();

@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
+#include "ModuleFonts.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
 #include "ModuleFadeToBlack.h"
@@ -29,7 +30,13 @@ bool ModuleSceneIntro::Start()
 
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
-	App->start_scene->Disable();
+	
+	App->physics->Enable();
+	App->gui->Enable();
+	App->fonts->Enable();
+	App->player->Enable();
+
+	
 
 	circle = App->textures->Load("assets/wheel.png"); 
 	box = App->textures->Load("assets/crate.png");
@@ -65,8 +72,12 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(lifeCountTex3);
 	App->textures->Unload(lifeCountTex2);
 	App->textures->Unload(lifeCountTex1);
-
-
+	
+	App->physics->Disable();
+	App->gui->Disable();
+	App->fonts->Disable();
+	App->player->Disable();
+	
 	return true;
 }
 
@@ -203,7 +214,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		App->fade->FadeToBlack(App->scene_intro, App->start_scene, 1.5f);
+		App->fade->FadeToBlack(App->main_scene, App->start_scene, 1.5f);
 			
 	}
 	return UPDATE_CONTINUE;

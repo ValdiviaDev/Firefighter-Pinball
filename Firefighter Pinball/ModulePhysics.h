@@ -34,7 +34,7 @@ public:
 class ModulePhysics : public Module, public b2ContactListener // TODO
 {
 public:
-	ModulePhysics(Application* app, bool start_enabled = true);
+	ModulePhysics(Application* app, bool start_enabled = false);
 	~ModulePhysics();
 
 	bool Start();

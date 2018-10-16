@@ -27,7 +27,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModulePlayer* player;
-	ModuleSceneIntro* scene_intro;
+	ModuleSceneIntro* main_scene;
 	ModulePhysics* physics;
 	ModuleFonts* fonts;
 	ModuleGui* gui;

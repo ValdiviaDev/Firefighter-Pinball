@@ -77,7 +77,7 @@ PhysBody * ModulePlayer::CreateBall()
 {
 	ballInitialPos = { 495,750 };
 	PhysBody* ballPB = App->physics->CreateCircle(ballInitialPos.x, ballInitialPos.y, 12, b2_dynamicBody);
-	ballPB->listener = (Module*)App->scene_intro;
+	ballPB->listener = (Module*)App->main_scene;
 	return ballPB;
 }
 
@@ -94,7 +94,7 @@ void ModulePlayer::ResetBall()
 	}
 
 	lives--;
-	App->scene_intro->hasLifeCountChanged = true;
+	App->main_scene->hasLifeCountChanged = true;
 
 	if (lives > 0)
 		ball = CreateBall();

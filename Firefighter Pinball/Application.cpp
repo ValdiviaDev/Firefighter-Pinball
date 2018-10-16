@@ -22,7 +22,7 @@ Application::Application()
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
 	player = new ModulePlayer(this);
-	scene_intro = new ModuleSceneIntro(this);
+	main_scene = new ModuleSceneIntro(this);
 	physics = new ModulePhysics(this);
 	fonts = new ModuleFonts(this);
 	gui = new ModuleGui(this);
@@ -33,7 +33,7 @@ Application::Application()
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
-	// Main Modules
+	// Main Modules	
 	AddModule(window);
 	AddModule(physics);
 	AddModule(renderer);
@@ -47,7 +47,7 @@ Application::Application()
 	// Scenes
 
 	AddModule(start_scene);
-	AddModule(scene_intro);
+	AddModule(main_scene);
 	
 	// Player
 	AddModule(player);

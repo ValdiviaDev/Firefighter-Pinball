@@ -32,7 +32,7 @@ bool ModuleStartScreen::Start()
 	
 	//Play stage music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
-	App->scene_intro->Disable();
+	App->main_scene->Disable();
 	App->player->Disable();
 	
 	
@@ -59,7 +59,7 @@ update_status ModuleStartScreen::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		App->fade->FadeToBlack(this, App->scene_intro, 1.5f);
+		App->fade->FadeToBlack(this, App->main_scene, 1.5f);
 			
 	}
 
