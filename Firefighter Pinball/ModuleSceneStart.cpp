@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleSceneMain.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
@@ -9,9 +9,9 @@
 #include "ModulePlayer.h"
 #include "ModuleGui.h"
 #include "ModuleFadeToBlack.h"
-#include "ModuleStartScreen.h"
+#include "ModuleSceneStart.h"
 
-ModuleStartScreen::ModuleStartScreen(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneStart::ModuleSceneStart(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	IntroScreen.x = 0;
 	IntroScreen.y = 0;
@@ -20,11 +20,11 @@ ModuleStartScreen::ModuleStartScreen(Application* app, bool start_enabled) : Mod
 
 }
 
-ModuleStartScreen::~ModuleStartScreen()
+ModuleSceneStart::~ModuleSceneStart()
 {}
 
 // Load assets
-bool ModuleStartScreen::Start()
+bool ModuleSceneStart::Start()
 {
 	LOG("Loading background assets");
 	bool ret = true;
@@ -32,7 +32,7 @@ bool ModuleStartScreen::Start()
 	
 	//Play stage music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
-	App->main_scene->Disable();
+	App->scene_main->Disable();
 	App->player->Disable();
 	
 	
@@ -41,25 +41,25 @@ bool ModuleStartScreen::Start()
 }
 
 // Load assets
-bool ModuleStartScreen::CleanUp()
+bool ModuleSceneStart::CleanUp()
 {
 	LOG("Unloading Intro Scene");
 	App->textures->Unload(TexIntroScreen);
-	App->start_scene->Disable();
+	App->scene_start->Disable();
 
 	return true;
 }
 
 // Update: draw background
-update_status ModuleStartScreen::Update()
+update_status ModuleSceneStart::Update()
 {
 	// Draw everything --------------------------------------	
 	App->renderer->Blit(TexIntroScreen, 0, 0, &IntroScreen);
 
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		App->fade->FadeToBlack(this, App->main_scene, 1.5f);
+		App->fade->FadeToBlack(this, App->scene_main, 1.5f);
 			
 	}
 

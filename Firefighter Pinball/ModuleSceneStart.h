@@ -1,5 +1,5 @@
-#ifndef __MODULELOSEIMAGE_H__
-#define __MODULELOSEIMAGE_H__
+#ifndef __MODULESCENESTART_H__
+#define __MODULESCENESTART_H__
 
 #pragma once
 #include "Module.h"
@@ -10,11 +10,11 @@
 struct SDL_Texture;
 
 
-class ModuleStartScreen : public Module
+class ModuleSceneStart : public Module
 {
 public:
-	ModuleStartScreen(Application* app, bool start_enabled = true);
-	~ModuleStartScreen();
+	ModuleSceneStart(Application* app, bool start_enabled = true);
+	~ModuleSceneStart();
 
 	bool Start();
 	update_status Update();
@@ -28,4 +28,4 @@ public:
 
 };
 
-#endif // __MODULESTARTINGIMAGE_H__
+#endif // __MODULESCENESTART_H__

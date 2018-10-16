@@ -6,7 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleSceneMain.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -77,7 +77,7 @@ PhysBody * ModulePlayer::CreateBall()
 {
 	ballInitialPos = { 495,750 };
 	PhysBody* ballPB = App->physics->CreateCircle(ballInitialPos.x, ballInitialPos.y, 12, b2_dynamicBody);
-	ballPB->listener = (Module*)App->main_scene;
+	ballPB->listener = (Module*)App->scene_main;
 	return ballPB;
 }
 
@@ -94,7 +94,7 @@ void ModulePlayer::ResetBall()
 	}
 
 	lives--;
-	App->main_scene->hasLifeCountChanged = true;
+	App->scene_main->hasLifeCountChanged = true;
 
 	if (lives > 0)
 		ball = CreateBall();

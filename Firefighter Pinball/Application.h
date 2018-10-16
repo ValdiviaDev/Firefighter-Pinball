@@ -11,12 +11,13 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleAudio;
 class ModulePlayer;
-class ModuleSceneIntro;
+class ModuleSceneMain;
 class ModulePhysics;
 class ModuleFonts;
 class ModuleGui;
 class ModuleFadeToBlack;
-class ModuleStartScreen;
+class ModuleSceneStart;
+class ModuleSceneOver;
 
 class Application
 {
@@ -27,12 +28,13 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModulePlayer* player;
-	ModuleSceneIntro* main_scene;
+	ModuleSceneMain* scene_main;
 	ModulePhysics* physics;
 	ModuleFonts* fonts;
 	ModuleGui* gui;
 	ModuleFadeToBlack* fade;
-	ModuleStartScreen* start_scene;
+	ModuleSceneStart* scene_start;
+	ModuleSceneOver* scene_over;
 
 private:
 

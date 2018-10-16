@@ -1,8 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleSceneIntro.h"
-#include "ModuleStartScreen.h"
+#include "ModuleSceneMain.h"
+#include "ModuleSceneStart.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
@@ -10,20 +10,21 @@
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
 #include "ModuleFadeToBlack.h"
+#include "ModuleSceneOver.h"
 #include "ModuleGui.h"
 
-ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
 }
 
-ModuleSceneIntro::~ModuleSceneIntro()
+ModuleSceneMain::~ModuleSceneMain()
 {}
 
 // Load assets
-bool ModuleSceneIntro::Start()
+bool ModuleSceneMain::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
@@ -65,7 +66,7 @@ bool ModuleSceneIntro::Start()
 }
 
 // Load assets
-bool ModuleSceneIntro::CleanUp()
+bool ModuleSceneMain::CleanUp()
 {
 	LOG("Unloading Intro scene");
 	App->textures->Unload(background);
@@ -82,7 +83,7 @@ bool ModuleSceneIntro::CleanUp()
 }
 
 // Update: draw background
-update_status ModuleSceneIntro::Update()
+update_status ModuleSceneMain::Update()
 {
 	if (!scoreCharged)
 		ChargeScore();
@@ -212,15 +213,15 @@ update_status ModuleSceneIntro::Update()
 	}
 
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		App->fade->FadeToBlack(App->main_scene, App->start_scene, 1.5f);
+		App->fade->FadeToBlack(this, App->scene_over, 1.5f);
 			
 	}
 	return UPDATE_CONTINUE;
 }
 
-void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	PhysBody* ball = App->player->GetBall();
 
@@ -285,7 +286,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 }
 
-void ModuleSceneIntro::CreateStage(PhysBody * stage)
+void ModuleSceneMain::CreateStage(PhysBody * stage)
 {
 	int scenePoints[124] = {
 		515, 755,
@@ -356,7 +357,7 @@ void ModuleSceneIntro::CreateStage(PhysBody * stage)
 
 }
 
-void ModuleSceneIntro::CreateBumpers()
+void ModuleSceneMain::CreateBumpers()
 {
 	//Bumper balls
 	bumper.bumperBall[0] = App->physics->CreateCircle(208, 219, 24, b2_staticBody);
@@ -412,7 +413,7 @@ void ModuleSceneIntro::CreateBumpers()
 
 }
 
-void ModuleSceneIntro::CreateSensors()
+void ModuleSceneMain::CreateSensors()
 {
 	//Death barrier
 	sensor.deathSensor = App->physics->CreateRectangleSensor(0, 850, 1200, 50);
@@ -450,13 +451,13 @@ void ModuleSceneIntro::CreateSensors()
 
 }
 
-void ModuleSceneIntro::ChargeScore()
+void ModuleSceneMain::ChargeScore()
 {
 	scoreLabel = App->gui->CreateLabel({ 150,40 }, "000000", App->gui->GetFont(FONT), { 255,255,255,255 }, this);
 	scoreCharged = true;
 }
 
-void ModuleSceneIntro::ChangeLifeCount()
+void ModuleSceneMain::ChangeLifeCount()
 {
 	if (App->player->lives == 2)
 		lifeCount->ChangeImage(lifeCountTex2);
@@ -466,7 +467,7 @@ void ModuleSceneIntro::ChangeLifeCount()
 	hasLifeCountChanged = false;
 }
 
-void ModuleSceneIntro::ChangeScoreLabel()
+void ModuleSceneMain::ChangeScoreLabel()
 {
 	if (score < 100) 
 		scoreLabel->ChangeText((p2SString("0000%i", (score))));

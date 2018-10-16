@@ -6,11 +6,12 @@
 #include "ModuleAudio.h"
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleSceneStart.h"
 #include "ModuleFonts.h"
 #include "ModuleGui.h"
 #include "ModuleFadeToBlack.h"
-#include "ModuleStartScreen.h"
+#include "ModuleSceneMain.h"
+#include "ModuleSceneOver.h"
 
 #include "Application.h"
 
@@ -22,12 +23,13 @@ Application::Application()
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
 	player = new ModulePlayer(this);
-	main_scene = new ModuleSceneIntro(this);
+	scene_main = new ModuleSceneMain(this);
 	physics = new ModulePhysics(this);
 	fonts = new ModuleFonts(this);
 	gui = new ModuleGui(this);
 	fade = new ModuleFadeToBlack(this);
-	start_scene = new ModuleStartScreen(this);
+	scene_start = new ModuleSceneStart(this);
+	scene_over = new ModuleSceneOver(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -41,13 +43,15 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(fonts);
+	
 
 
 	
 	// Scenes
 
-	AddModule(start_scene);
-	AddModule(main_scene);
+	AddModule(scene_start);
+	AddModule(scene_main);
+	AddModule(scene_over);
 	
 	// Player
 	AddModule(player);

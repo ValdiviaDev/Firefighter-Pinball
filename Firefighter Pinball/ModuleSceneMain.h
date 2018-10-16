@@ -21,11 +21,11 @@ struct Sensors {
 	PhysBody* stairsSensor = nullptr;
 };
 
-class ModuleSceneIntro : public Module
+class ModuleSceneMain : public Module
 {
 public:
-	ModuleSceneIntro(Application* app, bool start_enabled = true);
-	~ModuleSceneIntro();
+	ModuleSceneMain(Application* app, bool start_enabled = true);
+	~ModuleSceneMain();
 
 	bool Start();
 	update_status Update();
