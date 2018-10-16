@@ -14,7 +14,7 @@ ModuleFonts::ModuleFonts(Application* app, bool start_enabled): Module(app, star
 ModuleFonts::~ModuleFonts()
 {}
 
-bool ModuleFonts::Init()
+bool ModuleFonts::Start()
 {
 	LOG("Init True Type Font library");
 	bool ret = true;

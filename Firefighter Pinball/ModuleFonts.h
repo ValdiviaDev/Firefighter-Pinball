@@ -22,7 +22,7 @@ public:
 
 	// Called before render is available
 	//bool Awake(pugi::xml_node&);
-	bool Init();
+	bool Start();
 
 	// Called before quitting
 	bool CleanUp();

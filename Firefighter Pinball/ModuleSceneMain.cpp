@@ -33,8 +33,8 @@ bool ModuleSceneMain::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
 	App->physics->Enable();
-	App->gui->Enable();
 	App->fonts->Enable();
+	App->gui->Enable();
 	App->player->Enable();
 
 	
@@ -61,6 +61,10 @@ bool ModuleSceneMain::Start()
 	lifeCountTex1 = App->textures->Load("assets/textures/gui/lifeCount1.png");
 	
 	lifeCount = App->gui->CreateImage({ 10,10 }, { 0,0,255,76 }, lifeCountTex3, this);
+
+	//Be able to charge the score
+	scoreCharged = false;
+	score = 0;
 
 	return ret;
 }

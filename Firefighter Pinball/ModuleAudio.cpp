@@ -49,12 +49,7 @@ bool ModuleAudio::Init()
 
 bool ModuleAudio::Start()
 {
-
-	if (!isCharged)
-	{
-		ChargeFX();
-	}
-	
+	ChargeFX();
 	return true;
 }
 
