@@ -156,6 +156,47 @@ update_status ModuleSceneMain::Update()
 		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64, b2_dynamicBody));
 	}
 
+
+	//Scene Chains
+
+
+	int background[62] = {
+		469, 797,
+		468, 679,
+		472, 531,
+		472, 404,
+		476, 332,
+		469, 276,
+		453, 237,
+		411, 177,
+		375, 133,
+		334, 105,
+		306, 91,
+		309, 145,
+		401, 174,
+		422, 199,
+		434, 221,
+		449, 238,
+		465, 270,
+		470, 312,
+		421, 357,
+		410, 462,
+		419, 469,
+		428, 472,
+		436, 474,
+		452, 492,
+		457, 501,
+		459, 514,
+		459, 755,
+		426, 757,
+		424, 707,
+		301, 770,
+		301, 799,
+	
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, background, 62, b2_staticBody));
+
 	// Prepare for raycast ------------------------------------------------------
 	
 	iPoint mouse;
