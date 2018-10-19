@@ -37,6 +37,7 @@ public:
 	void CreateStage(PhysBody* stage);
 	void CreateBumpers();
 	void CreateSensors();
+	void CreateChainColliders();
 
 	void ChargeScore();
 
