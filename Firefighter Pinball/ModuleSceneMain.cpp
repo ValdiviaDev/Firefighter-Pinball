@@ -65,28 +65,176 @@ bool ModuleSceneMain::Start()
 	//Be able to charge the score
 	scoreCharged = false;
 	score = 0;
-	int background[36] = {
-		412, 464,
-		410, 398,
-		489, 325,
-		469, 229,
-		306, 142,
-		307, 98,
-		349, 111,
-		408, 170,
-		472, 216,
-		511, 319,
-		473, 410,
-		475, 549,
-		473, 808,
-		461, 804,
-		458, 514,
-		435, 475,
-		423, 472,
-		417, 470,
 
+	//Background Chain Colliders
+
+	int background1[22] = {
+		520, 804,
+		518, 401,
+		506, 268,
+		473, 189,
+		438, 139,
+		380, 81,
+		340, 59,
+		258, 42,
+		275, 0,
+		580, -7,
+		572, 807
 	};
-	collider1.add(App->physics->CreateChain(0, 0, background, 36, b2_staticBody));
+	collider1.add(App->physics->CreateChain(0, 0, background1, 22, b2_staticBody));
+
+	int background2[44] = {
+	199, 800,
+	197, 765,
+	80, 704,
+	80, 762,
+	42, 767,
+	41, 508,
+	74, 468,
+	10, 325,
+	5, 245,
+	25, 145,
+	64, 74,
+	98, 36,
+	140, 9,
+	186, 5,
+	213, 12,
+	230, 25,
+	245, 41,
+	251, 55,
+	252, -11,
+	-14, -24,
+	-31, 845,
+	157, 801
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, background2, 44, b2_staticBody));
+
+	int background3[56] = {
+	66, 353,
+	41, 295,
+	36, 245,
+	45, 182,
+	73, 125,
+	126, 70,
+	177, 50,
+	196, 97,
+	196, 142,
+	114, 172,
+	112, 190,
+	124, 249,
+	173, 358,
+	153, 399,
+	103, 318,
+	87, 272,
+	87, 223,
+	100, 180,
+	116, 145,
+	138, 111,
+	116, 89,
+	75, 134,
+	52, 183,
+	45, 231,
+	45, 279,
+	56, 320,
+	117, 429,
+	112, 433
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, background3, 56, b2_staticBody));
+
+	int background4[30] = {
+	467, 798,
+	470, 400,
+	465, 320,
+	413, 365,
+	410, 455,
+	420, 470,
+	438, 476,
+	450, 491,
+	456, 507,
+	459, 535,
+	461, 767,
+	425, 770,
+	424, 703,
+	298, 776,
+	298, 807
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, background4, 30, b2_staticBody));
+
+	int smallQuadL[8] = {
+	225, 100,
+	225, 132,
+	234, 132,
+	234, 100
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, smallQuadL, 8, b2_staticBody));
+
+	int smallQuadR[8] = {
+	264, 102,
+	264, 133,
+	273, 133,
+	273, 102
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, smallQuadR, 8, b2_staticBody));
+
+	int background5[22] = {
+	453, 266,
+	428, 206,
+	403, 173,
+	304, 142,
+	306, 94,
+	317, 96,
+	353, 116,
+	375, 134,
+	396, 153,
+	431, 204,
+	452, 256
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, background5, 22, b2_staticBody));
+
+	int LeftSupport[24] = {
+	88, 638,
+	104, 655,
+	153, 686,
+	145, 690,
+	145, 703,
+	91, 670,
+	79, 649,
+	77, 627,
+	75, 554,
+	80, 549,
+	83, 553,
+	84, 616
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, LeftSupport, 24, b2_staticBody));
+
+
+	int RightSupport[32] = {
+	354, 706,
+	408, 672,
+	417, 659,
+	422, 640,
+	425, 610,
+	423, 551,
+	416, 553,
+	416, 604,
+	415, 626,
+	410, 646,
+	382, 663,
+	368, 671,
+	343, 687,
+	352, 689,
+	355, 695,
+	357, 699
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, RightSupport, 32, b2_staticBody));
 
 	return ret;
 }
@@ -482,6 +630,8 @@ void ModuleSceneMain::CreateSensors()
 	sensor.stairsSensor = App->physics->CreateCircleSensor(107, 125, 20);
 
 }
+
+
 
 void ModuleSceneMain::ChargeScore()
 {
