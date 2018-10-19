@@ -65,6 +65,28 @@ bool ModuleSceneMain::Start()
 	//Be able to charge the score
 	scoreCharged = false;
 	score = 0;
+	int background[36] = {
+		412, 464,
+		412, 374,
+		474, 322,
+		466, 231,
+		306, 142,
+		307, 98,
+		349, 111,
+		408, 170,
+		472, 216,
+		480, 314,
+		473, 410,
+		475, 549,
+		473, 808,
+		461, 804,
+		458, 514,
+		435, 475,
+		423, 472,
+		417, 470,
+
+	};
+	collider1.add(App->physics->CreateChain(0, 0, background, 36, b2_staticBody));
 
 	return ret;
 }
@@ -160,42 +182,7 @@ update_status ModuleSceneMain::Update()
 	//Scene Chains
 
 
-	int background[62] = {
-		469, 797,
-		468, 679,
-		472, 531,
-		472, 404,
-		476, 332,
-		469, 276,
-		453, 237,
-		411, 177,
-		375, 133,
-		334, 105,
-		306, 91,
-		309, 145,
-		401, 174,
-		422, 199,
-		434, 221,
-		449, 238,
-		465, 270,
-		470, 312,
-		421, 357,
-		410, 462,
-		419, 469,
-		428, 472,
-		436, 474,
-		452, 492,
-		457, 501,
-		459, 514,
-		459, 755,
-		426, 757,
-		424, 707,
-		301, 770,
-		301, 799,
 	
-	};
-
-	collider1.add(App->physics->CreateChain(0, 0, background, 62, b2_staticBody));
 
 	// Prepare for raycast ------------------------------------------------------
 	
