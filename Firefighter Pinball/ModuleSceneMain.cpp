@@ -202,7 +202,31 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			App->audio->PlayFx(App->audio->GetFX().smallBumper1);
 			score += 30;
 			ChangeScoreLabel();
-			ball->body->ApplyLinearImpulse({ -ball->body->GetLinearVelocity().x * 0.2f,-ball->body->GetLinearVelocity().y * 0.2f }, { 0.0f,0.0f }, true);
+			int rng = rand() % 5;
+
+			b2Vec2 norm_vec = ball->body->GetLinearVelocity();
+			norm_vec.Normalize();
+
+			float impulse = 0.0f;
+
+			switch (rng){
+				case 0:
+					impulse = 0.5f;
+					break;
+				case 1:
+					impulse = 0.7f;
+					break;
+				case 2: 
+					impulse = 1.0f;
+					break;
+				case 3:
+					impulse = 1.3f;
+					break;
+				case 4:
+					impulse = 2.0f;
+					break;
+			}
+			ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
 		}
 	}
 
@@ -216,10 +240,11 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 
 	//Sensors
+
 	//Lift up
 	for (int i = 0; i < 2; i++) {
 		if (bodyA == ball && bodyB == sensor.liftUpSensor[i]) {
-			ball->body->ApplyForceToCenter({ 0.0f,-150.0f }, true);
+			ball->body->ApplyForceToCenter({ 0.0f,-200.0f }, true);
 			App->audio->PlayFx(App->audio->GetFX().liftUp);
 		}
 	}
