@@ -103,6 +103,7 @@ update_status ModuleSceneMain::Update()
 
 	if (App->player->lives == 0) {
 		App->fade->FadeToBlack(this, App->scene_over, 1.5f);
+		App->player->lives = 3;
 	}
 
 	App->renderer->Blit(background, 0, 0);
