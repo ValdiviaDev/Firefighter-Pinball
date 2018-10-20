@@ -11,6 +11,7 @@
 #include "ModuleFadeToBlack.h"
 #include "ModuleSceneOver.h"
 #include "ModuleSceneStart.h"
+#include "ModuleFonts.h"
 
 ModuleSceneOver::ModuleSceneOver(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -35,6 +36,12 @@ bool ModuleSceneOver::Start()
 	//App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 	App->scene_main->Disable();
 	App->player->Disable();
+	App->gui->Enable();
+	App->fonts->Enable();
+
+
+	p2SString score_text = (p2SString("%00000i", (App->scene_main->GetScore())));
+	UILabel* scoreLabel = App->gui->CreateLabel({ 270,120 }, score_text, App->gui->GetFont(FONT), { 255, 255, 255, 255 }, this);
 
 
 	return ret;
@@ -46,7 +53,9 @@ bool ModuleSceneOver::CleanUp()
 {
 	LOG("Unloading Intro Scene");
 	App->textures->Unload(TexOverScreen);
-	App->scene_start->Disable();
+	App->gui->Disable();
+	App->fonts->Disable();
+	
 
 	return true;
 }

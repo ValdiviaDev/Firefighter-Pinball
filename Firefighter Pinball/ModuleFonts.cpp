@@ -27,7 +27,7 @@ bool ModuleFonts::Start()
 	else
 	{
 		const char* path = "assets/Fonts/gomarice_game_continue_02.ttf";
-		int size = 12;
+		int size = 40;
 		default = Load(path, size);
 	}
  

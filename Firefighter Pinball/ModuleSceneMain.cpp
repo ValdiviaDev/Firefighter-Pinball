@@ -85,9 +85,9 @@ bool ModuleSceneMain::CleanUp()
 	App->textures->Unload(lifeCountTex1);
 	
 	App->physics->Disable();
+	App->player->Disable();
 	App->gui->Disable();
 	App->fonts->Disable();
-	App->player->Disable();
 	
 	return true;
 }
@@ -647,3 +647,9 @@ void ModuleSceneMain::ChangeScoreLabel()
 	else if (score > 999999)
 		scoreLabel->ChangeText((p2SString("%i", (999999))));
 }
+
+uint ModuleSceneMain::GetScore()
+{
+	return score;
+}
+

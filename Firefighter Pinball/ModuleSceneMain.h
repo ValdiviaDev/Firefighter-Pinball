@@ -45,6 +45,8 @@ public:
 	void ChangeScoreLabel();
 	bool hasLifeCountChanged = false;
 
+	uint GetScore();
+
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
