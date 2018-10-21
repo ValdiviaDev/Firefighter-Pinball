@@ -75,5 +75,10 @@ private:
 	SDL_Texture* flipLeftTex = nullptr;
 	SDL_Texture* flipRightTex = nullptr;
 	SDL_Texture* springTex = nullptr;
+	SDL_Texture* spritesheet = nullptr;
+
+	Animation left_bouncer = Animation();
+	Animation right_bouncer = Animation();
+	Animation leftup_bouncer = Animation();
 
 };
