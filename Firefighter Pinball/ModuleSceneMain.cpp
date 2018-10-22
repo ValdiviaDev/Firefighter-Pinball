@@ -231,20 +231,34 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 
 	//Big bumpers
-	for (int i = 0; i < 3; i++) {
-		if (bodyA == ball && bodyB == bumper.bigBumper[i]) {
-			App->audio->PlayFx(App->audio->GetFX().bigBumper);
-			score += 50;
-			ChangeScoreLabel();
-		}
+	if (bodyA == ball && bodyB == bumper.bigBumpLeft) {
+		ball->body->ApplyLinearImpulse({ 1.0f * 3, -1.0f * 3 }, { 0.0f,0.0f }, true);
+		score += 50;
+		App->audio->PlayFx(App->audio->GetFX().bigBumper);
+		ChangeScoreLabel();
 	}
+
+	if (bodyA == ball && bodyB == bumper.bigBumpLeftUp) {
+		ball->body->ApplyLinearImpulse({ 1.0f * 3, -1.0f * 3 }, { 0.0f,0.0f }, true);
+		score += 50;
+		App->audio->PlayFx(App->audio->GetFX().bigBumper);
+		ChangeScoreLabel();
+	}
+
+	if (bodyA == ball && bodyB == bumper.bigBumpRight) {
+		ball->body->ApplyLinearImpulse({ -1.0f * 3, -1.0f * 3 }, { 0.0f,0.0f }, true);
+		score += 50;
+		App->audio->PlayFx(App->audio->GetFX().bigBumper);
+		ChangeScoreLabel();
+	}
+
 
 	//Sensors
 
 	//Lift up
 	for (int i = 0; i < 2; i++) {
 		if (bodyA == ball && bodyB == sensor.liftUpSensor[i]) {
-			ball->body->ApplyForceToCenter({ 0.0f,-200.0f }, true);
+			ball->body->ApplyForceToCenter({ 0.0f,-210.0f }, true);
 			App->audio->PlayFx(App->audio->GetFX().liftUp);
 		}
 	}
@@ -541,7 +555,7 @@ void ModuleSceneMain::CreateBumpers()
 		40, 101,
 		4, 81
 	};
-	bumper.bigBumper[0] = App->physics->CreateChain(119, 547, leftBumpCoords, 20, b2_staticBody);
+	bumper.bigBumpLeft = App->physics->CreateChain(119, 547, leftBumpCoords, 20, b2_staticBody);
 
 	int rightBumpCoords[20] = {
 		0, 93,
@@ -555,7 +569,7 @@ void ModuleSceneMain::CreateBumpers()
 		4, 100,
 		1, 98
 	};
-	bumper.bigBumper[1] = App->physics->CreateChain(333, 547, rightBumpCoords, 20, b2_staticBody);
+	bumper.bigBumpRight = App->physics->CreateChain(333, 547, rightBumpCoords, 20, b2_staticBody);
 
 	int rightUpBumpCoords[26] = {
 		0, 8,
@@ -572,7 +586,7 @@ void ModuleSceneMain::CreateBumpers()
 		44, 97,
 		3, 15
 	};
-	bumper.bigBumper[2] = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody);
+	bumper.bigBumpLeftUp = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody);
 
 }
 

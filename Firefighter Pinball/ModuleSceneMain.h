@@ -9,8 +9,10 @@ class UILabel;
 class UIImage;
 
 struct Bumpers {
+	PhysBody* bigBumpLeft;
+	PhysBody* bigBumpLeftUp;
+	PhysBody* bigBumpRight;
 	PhysBody* bumperBall[4];
-	PhysBody* bigBumper[3];
 };
 
 struct Sensors {

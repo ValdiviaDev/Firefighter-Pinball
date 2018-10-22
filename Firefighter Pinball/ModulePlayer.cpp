@@ -311,7 +311,7 @@ void ModulePlayer::PrintBall()
 	iPoint ballPos = { 0,0 };
 	ball->GetPosition(ballPos.x, ballPos.y);
 
-	App->renderer->Blit(ballTex, ballPos.x, ballPos.y, NULL, 1.0f, ball->GetRotation());
+	App->renderer->Blit(ballTex, ballPos.x, ballPos.y, NULL);
 }
 
 void ModulePlayer::PrintFlippers()
