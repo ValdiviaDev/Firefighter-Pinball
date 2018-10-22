@@ -556,6 +556,10 @@ void ModuleSceneMain::CreateBumpers()
 		4, 81
 	};
 	bumper.bigBumpLeft = App->physics->CreateChain(119, 547, leftBumpCoords, 20, b2_staticBody);
+	
+
+	bumper.bigBumpLeft = App->physics->CreateRectangleSensor(140, 557, 10, 60);
+	bumper.bigBumpLeft->body->SetTransform(bumper.bigBumpLeft->body->GetPosition(), -60);
 
 	int rightBumpCoords[20] = {
 		0, 93,
