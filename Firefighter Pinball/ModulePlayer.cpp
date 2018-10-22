@@ -10,34 +10,7 @@
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	//left bouncer
-	
-	left_bouncer.PushBack({ 365,295,46,97 });
-	left_bouncer.PushBack({ 300,295,45,97 });
-	left_bouncer.PushBack({ 225,295,44,97 });
-	left_bouncer.loop = false;
-	left_bouncer.speed = 1.5f;
-	
-	//right bouncer
 
-	right_bouncer.PushBack({ 225,169,46,97 });
-	right_bouncer.PushBack({ 291,169,45,97 });
-	right_bouncer.PushBack({ 367,169,44,97 });
-	right_bouncer.loop = false;
-	right_bouncer.speed = 1.5f;
-	
-	//leftup bouncer
-	
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.loop = false;
-	leftup_bouncer.speed = 1.5f;
-
-
-	//medical cross
-	//blue circles
 
 
 }
@@ -64,9 +37,7 @@ bool ModulePlayer::Start()
 	//Create spring
 	spring = CreateSpring({ 495, 802 });
 
-	//Load spritesheet	
 
-	spritesheet = App->textures->Load("assets/textures/PinballSprites.png");
 
 
 	return true;

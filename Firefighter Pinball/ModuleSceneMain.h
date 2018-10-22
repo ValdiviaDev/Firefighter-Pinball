@@ -3,7 +3,9 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "Animation.h"
 
+class Animation;
 class PhysBody;
 class UILabel;
 class UIImage;
@@ -23,6 +25,18 @@ struct Sensors {
 	PhysBody* stairsSensor = nullptr;
 };
 
+struct AnimationExecute {
+
+	Animation* BumperBall1 = nullptr;
+	Animation* BumperBall2 = nullptr;
+	Animation* BumperBall3 = nullptr;
+	Animation* BumperDown1 = nullptr;
+	Animation* BumperDown2 = nullptr;
+	Animation* BumperUp = nullptr;
+	Animation* BumperClock = nullptr;
+
+};
+
 class ModuleSceneMain : public Module
 {
 public:
@@ -40,6 +54,7 @@ public:
 	void CreateBumpers();
 	void CreateSensors();
 	void CreateChainColliders();
+	void UpdateAnimationBumpers();
 
 	void ChargeScore();
 
@@ -55,6 +70,15 @@ public:
 	p2List<PhysBody*> ricks;
 	p2List<PhysBody*> collider1;
 
+	Animation* animation = nullptr;
+
+	Animation left_bouncer = Animation();
+	Animation right_bouncer = Animation();
+	Animation leftup_bouncer = Animation();
+
+	SDL_Texture* spritesheet = nullptr;
+
+	SDL_Rect left_bouncerRect;
 
 	//Sensors & Bumpers
 	Bumpers bumper;
@@ -84,5 +108,6 @@ private:
 	SDL_Texture* lifeCountTex3 = nullptr;
 	SDL_Texture* lifeCountTex2 = nullptr;
 	SDL_Texture* lifeCountTex1 = nullptr;
+	AnimationExecute  AnimExe;
 
 };

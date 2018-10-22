@@ -13,11 +13,48 @@
 #include "ModuleSceneOver.h"
 #include "ModuleGui.h"
 
+
 ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
+
+	left_bouncerRect.x = 225;
+	left_bouncerRect.y = 295;
+	left_bouncerRect.w = 44;
+	left_bouncerRect.h = 97;
+
+
+	//left bouncer
+
+	left_bouncer.PushBack({ 365,295,46,97 });
+	left_bouncer.PushBack({ 300,295,45,97 });
+	left_bouncer.PushBack({ 225,295,44,97 });
+	left_bouncer.loop = false;
+	left_bouncer.speed = 0.01f;
+
+	//right bouncer
+
+	right_bouncer.PushBack({ 225,169,46,97 });
+	right_bouncer.PushBack({ 291,169,45,97 });
+	right_bouncer.PushBack({ 367,169,44,97 });
+	right_bouncer.loop = false;
+	right_bouncer.speed = 1.5f;
+
+	//leftup bouncer
+
+	leftup_bouncer.PushBack({});
+	leftup_bouncer.PushBack({});
+	leftup_bouncer.PushBack({});
+	leftup_bouncer.PushBack({});
+	leftup_bouncer.loop = false;
+	leftup_bouncer.speed = 1.5f;
+
+
+	//medical cross
+	//blue circles
+
 }
 
 ModuleSceneMain::~ModuleSceneMain()
@@ -29,6 +66,7 @@ bool ModuleSceneMain::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	AnimExe.BumperBall1 = &left_bouncer;
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
@@ -44,8 +82,12 @@ bool ModuleSceneMain::Start()
 	rick = App->textures->Load("assets/rick_head.png");
 	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
 
-	//background = App->textures->Load("assets/textures/testScene.png");
-	background = App->textures->Load("assets/textures/background.png");
+
+	//background = App->textures->Load("assets/textures/background.png");
+
+	//Load spritesheet	
+
+	spritesheet = App->textures->Load("assets/textures/PinballSprites.png");
 
 	//Create the chains for the stage
 	//CreateStage(stage);
@@ -95,6 +137,11 @@ bool ModuleSceneMain::CleanUp()
 // Update: draw background
 update_status ModuleSceneMain::Update()
 {
+
+	//App->renderer->Blit(spritesheet, 118, 547, &left_bouncerRect);
+
+	UpdateAnimationBumpers();
+
 	if (!scoreCharged)
 		ChargeScore();
 
@@ -200,6 +247,7 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	for (int i = 0; i < 4; i++) {
 		if (bodyA == ball && bodyB == bumper.bumperBall[i]) {
 			App->audio->PlayFx(App->audio->GetFX().smallBumper1);
+			animation = &left_bouncer;
 			score += 30;
 			ChangeScoreLabel();
 			int rng = rand() % 5;
@@ -665,5 +713,22 @@ void ModuleSceneMain::ChangeScoreLabel()
 uint ModuleSceneMain::GetScore()
 {
 	return score;
+}
+
+
+void ModuleSceneMain::UpdateAnimationBumpers() 
+{
+
+	if (AnimExe.BumperBall1 != NULL) {
+		
+		SDL_Rect r = AnimExe.BumperBall1->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 118, 547, &r);
+		
+		if (AnimExe.BumperBall1->Finished()) {
+			AnimExe.BumperBall1 = NULL;
+		}
+	}
+
+
 }
 
