@@ -76,7 +76,8 @@ bool ModuleSceneMain::Start()
 	App->gui->Enable();
 	App->player->Enable();
 
-	
+	//Play scene music
+	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
 	circle = App->textures->Load("assets/wheel.png"); 
 	box = App->textures->Load("assets/crate.png");
@@ -225,7 +226,7 @@ update_status ModuleSceneMain::Update()
 	}
 
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		App->fade->FadeToBlack(this, App->scene_over, 1.5f);
 			
@@ -245,61 +246,27 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	//Bumpers
 	//Small bumpers
 	for (int i = 0; i < 4; i++) {
-		if (bodyA == ball && bodyB == bumper.bumperBall[i]) {
-			App->audio->PlayFx(App->audio->GetFX().smallBumper1);
-			animation = &left_bouncer;
-			score += 30;
-			ChangeScoreLabel();
-			int rng = rand() % 5;
-
-			b2Vec2 norm_vec = ball->body->GetLinearVelocity();
-			norm_vec.Normalize();
-
-			float impulse = 0.0f;
-
-			switch (rng){
-				case 0:
-					impulse = 0.5f;
-					break;
-				case 1:
-					impulse = 0.7f;
-					break;
-				case 2: 
-					impulse = 1.0f;
-					break;
-				case 3:
-					impulse = 1.3f;
-					break;
-				case 4:
-					impulse = 2.0f;
-					break;
-			}
-			ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
-		}
+		if (bodyA == ball && bodyB == bumper.bumperBall[i])
+			SmallBumpCollisionInteraction(i, ball);
+			
 	}
 
 	//Big bumpers
 	if (bodyA == ball && bodyB == bumper.bigBumpLeft) {
-		ball->body->ApplyLinearImpulse({ 1.0f * 3, -1.0f * 3 }, { 0.0f,0.0f }, true);
-		score += 50;
-		App->audio->PlayFx(App->audio->GetFX().bigBumper);
-		ChangeScoreLabel();
+		ball->body->ApplyLinearImpulse({ 1.0f * 2.5, -1.0f * 2.5 }, { 0.0f,0.0f }, true);
+		BigBumpCollisionInteraction(LEFT, ball);
 	}
 
 	if (bodyA == ball && bodyB == bumper.bigBumpLeftUp) {
-		ball->body->ApplyLinearImpulse({ 1.0f * 3, -1.0f * 3 }, { 0.0f,0.0f }, true);
-		score += 50;
-		App->audio->PlayFx(App->audio->GetFX().bigBumper);
-		ChangeScoreLabel();
+		ball->body->ApplyLinearImpulse({ 1.0f * 2.5, -1.0f * 2.5 }, { 0.0f,0.0f }, true);
+		BigBumpCollisionInteraction(LEFT_UP, ball);
 	}
+
 
 	if (bodyA == ball && bodyB == bumper.bigBumpRight) {
-		ball->body->ApplyLinearImpulse({ -1.0f * 3, -1.0f * 3 }, { 0.0f,0.0f }, true);
-		score += 50;
-		App->audio->PlayFx(App->audio->GetFX().bigBumper);
-		ChangeScoreLabel();
+		ball->body->ApplyLinearImpulse({ -1.0f * 2.5, -1.0f * 2.5 }, { 0.0f,0.0f }, true);
+		BigBumpCollisionInteraction(RIGHT, ball);
 	}
-
 
 	//Sensors
 
@@ -603,11 +570,11 @@ void ModuleSceneMain::CreateBumpers()
 		40, 101,
 		4, 81
 	};
-	bumper.bigBumpLeft = App->physics->CreateChain(119, 547, leftBumpCoords, 20, b2_staticBody);
+	App->physics->CreateChain(119, 547, leftBumpCoords, 20, b2_staticBody); //Bumper creation
 	
 
-	bumper.bigBumpLeft = App->physics->CreateRectangleSensor(140, 557, 10, 60);
-	bumper.bigBumpLeft->body->SetTransform(bumper.bigBumpLeft->body->GetPosition(), -60);
+	bumper.bigBumpLeft = App->physics->CreateRectangleSensor(146, 595, 10, 85);
+	bumper.bigBumpLeft->body->SetTransform(bumper.bigBumpLeft->body->GetPosition(), DEGTORAD * -23); //Sensor for the bumper creation and rotation
 
 	int rightBumpCoords[20] = {
 		0, 93,
@@ -621,7 +588,10 @@ void ModuleSceneMain::CreateBumpers()
 		4, 100,
 		1, 98
 	};
-	bumper.bigBumpRight = App->physics->CreateChain(333, 547, rightBumpCoords, 20, b2_staticBody);
+	App->physics->CreateChain(333, 547, rightBumpCoords, 20, b2_staticBody); //Bumper creation
+
+	bumper.bigBumpRight = App->physics->CreateRectangleSensor(355, 595, 10, 85);
+	bumper.bigBumpRight->body->SetTransform(bumper.bigBumpRight->body->GetPosition(), DEGTORAD * 23); //Sensor for the bumper creation and rotation
 
 	int rightUpBumpCoords[26] = {
 		0, 8,
@@ -638,7 +608,7 @@ void ModuleSceneMain::CreateBumpers()
 		44, 97,
 		3, 15
 	};
-	bumper.bigBumpLeftUp = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody);
+	bumper.bigBumpLeftUp = App->physics->CreateChain(132, 257, rightUpBumpCoords, 26, b2_staticBody); //Bumper creation
 
 }
 
@@ -672,8 +642,8 @@ void ModuleSceneMain::CreateSensors()
 	sensor.starSensor[2] = App->physics->CreateRectangleSensor(288, 117, 23, 23);
 
 	//Lift up sensors
-	sensor.liftUpSensor[0] = App->physics->CreateRectangleSensor(61, 746, 30, 19);
-	sensor.liftUpSensor[1] = App->physics->CreateRectangleSensor(442, 746, 30, 19);
+	sensor.liftUpSensor[0] = App->physics->CreateRectangleSensor(61, 746, 30, 30);
+	sensor.liftUpSensor[1] = App->physics->CreateRectangleSensor(442, 746, 30, 30);
 
 	//Stair sensor
 	sensor.stairsSensor = App->physics->CreateCircleSensor(107, 125, 20);
@@ -712,6 +682,49 @@ void ModuleSceneMain::ChangeScoreLabel()
 		scoreLabel->ChangeText((p2SString("%i", (score))));
 	else if (score > 999999)
 		scoreLabel->ChangeText((p2SString("%i", (999999))));
+}
+
+void ModuleSceneMain::SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball)
+{
+	App->audio->PlayFx(App->audio->GetFX().smallBumper1);
+	animation = &left_bouncer;
+	score += 30;
+	ChangeScoreLabel();
+	int rng = rand() % 5;
+
+	b2Vec2 norm_vec = ball->body->GetLinearVelocity();
+	norm_vec.Normalize();
+
+	float impulse = 0.0f;
+
+	switch (rng) {
+	case 0:
+		impulse = 0.5f;
+		break;
+	case 1:
+		impulse = 0.7f;
+		break;
+	case 2:
+		impulse = 1.0f;
+		break;
+	case 3:
+		impulse = 1.3f;
+		break;
+	case 4:
+		impulse = 2.0f;
+		break;
+	}
+	ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
+}
+
+void ModuleSceneMain::BigBumpCollisionInteraction(BigBumpType bumpType, PhysBody* ball)
+{
+
+	score += 50;
+	App->audio->PlayFx(App->audio->GetFX().bigBumper);
+	ChangeScoreLabel();
+
+
 }
 
 uint ModuleSceneMain::GetScore()

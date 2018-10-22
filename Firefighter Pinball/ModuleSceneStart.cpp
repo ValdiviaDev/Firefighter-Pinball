@@ -30,8 +30,9 @@ bool ModuleSceneStart::Start()
 	bool ret = true;
 	TexIntroScreen = App->textures->Load("assets/textures/Start_Screen.png");
 	
-	//Play stage music
-	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
+	//Play intro song music
+	App->audio->PlayMusic("assets/audio/music/introTheme.ogg");
+
 	App->scene_main->Disable();
 	App->player->Disable();
 	
@@ -57,7 +58,7 @@ update_status ModuleSceneStart::Update()
 	App->renderer->Blit(TexIntroScreen, 0, 0, &IntroScreen);
 
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		App->fade->FadeToBlack(this, App->scene_main, 1.5f);
 			

@@ -67,7 +67,7 @@ update_status ModuleSceneOver::Update()
 	App->renderer->Blit(TexOverScreen, 0, 0, &OverScreen);
 
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		App->fade->FadeToBlack(this, App->scene_start, 1.5f);
 

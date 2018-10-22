@@ -10,6 +10,13 @@ class PhysBody;
 class UILabel;
 class UIImage;
 
+enum BigBumpType {
+	NO_TYPE,
+	LEFT,
+	LEFT_UP,
+	RIGHT
+};
+
 struct Bumpers {
 	PhysBody* bigBumpLeft;
 	PhysBody* bigBumpLeftUp;
@@ -61,6 +68,10 @@ public:
 	void ChangeLifeCount();
 	void ChangeScoreLabel();
 	bool hasLifeCountChanged = false;
+
+	//On collision interaction
+	void SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball);
+	void BigBumpCollisionInteraction(BigBumpType bumpType, PhysBody* ball);
 
 	uint GetScore();
 
