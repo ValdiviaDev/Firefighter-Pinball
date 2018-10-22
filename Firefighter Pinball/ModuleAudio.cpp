@@ -182,8 +182,8 @@ void ModuleAudio::ChargeFX()
 		gameSounds.cat1 = LoadFx("assets/audio/soundEffects/cat1.wav");
 		gameSounds.cat2 = LoadFx("assets/audio/soundEffects/cat2.wav");
 		gameSounds.liftUp = LoadFx("assets/audio/soundEffects/liftUp.wav");
-		gameSounds.lightBallSensor1 = LoadFx("assets/audio/soundEffects/lightBallSensor1.wav");
-		gameSounds.lightBallSensor2 = LoadFx("assets/audio/soundEffects/lightBallSensor2.wav");
+		gameSounds.lightBallSensor = LoadFx("assets/audio/soundEffects/lightBallSensor.wav");
+		gameSounds.lightStarSensor = LoadFx("assets/audio/soundEffects/lightStarSensor.wav");
 		gameSounds.sirenHose = LoadFx("assets/audio/soundEffects/sirenHose.wav");
 		gameSounds.smallBumper1 = LoadFx("assets/audio/soundEffects/smallBumper1.wav");
 		gameSounds.smallBumper2 = LoadFx("assets/audio/soundEffects/smallBumper2.wav");

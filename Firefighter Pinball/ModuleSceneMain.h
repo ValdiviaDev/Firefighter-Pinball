@@ -11,10 +11,16 @@ class UILabel;
 class UIImage;
 
 enum BigBumpType {
-	NO_TYPE,
+	NO_BUMP_TYPE,
 	LEFT,
 	LEFT_UP,
 	RIGHT
+};
+
+enum SensorType {
+	NO_SENSOR_TYPE,
+	BALL,
+	STAR,
 };
 
 struct Bumpers {
@@ -30,6 +36,9 @@ struct Sensors {
 	PhysBody* starSensor[3];
 	PhysBody* liftUpSensor[2];
 	PhysBody* stairsSensor = nullptr;
+
+	bool isBallSensorActive[14];
+	bool isStarSensorActive[3];
 };
 
 struct AnimationExecute {
@@ -71,7 +80,12 @@ public:
 
 	//On collision interaction
 	void SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball);
-	void BigBumpCollisionInteraction(BigBumpType bumpType, PhysBody* ball);
+	void BigBumpCollisionInteraction(BigBumpType bumpType);
+	void SensorsCollisionInteraction(SensorType sensorType, int sensorNum);
+
+	//Check on sensors being active
+	void PrintActiveSensors();
+	void resetSensors();
 
 	uint GetScore();
 

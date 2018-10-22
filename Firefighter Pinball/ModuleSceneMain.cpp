@@ -71,6 +71,7 @@ bool ModuleSceneMain::Start()
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
+	//Enable modules
 	App->physics->Enable();
 	App->fonts->Enable();
 	App->gui->Enable();
@@ -84,20 +85,16 @@ bool ModuleSceneMain::Start()
 	rick = App->textures->Load("assets/rick_head.png");
 	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
 
-
+	//Load background
 	background = App->textures->Load("assets/textures/background.png");
 
 	//Load spritesheet	
-
 	spritesheet = App->textures->Load("assets/textures/PinballSprites.png");
 
-	//Create the chains for the stage
-	//CreateStage(stage);
+	//Create the sensors and bumpers for the ball to interact with
 	CreateSensors();
 	CreateBumpers();
-
-	//Play stage music													//AHORA ESTA EN LA PRIMERA PANTALLA
-	//App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
+	resetSensors();
 
 	//Charge life count
 	lifeCountTex3 = App->textures->Load("assets/textures/gui/lifeCount3.png");
@@ -254,18 +251,18 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	//Big bumpers
 	if (bodyA == ball && bodyB == bumper.bigBumpLeft) {
 		ball->body->ApplyLinearImpulse({ 1.0f * 2.5, -1.0f * 2.5 }, { 0.0f,0.0f }, true);
-		BigBumpCollisionInteraction(LEFT, ball);
+		BigBumpCollisionInteraction(LEFT);
 	}
 
 	if (bodyA == ball && bodyB == bumper.bigBumpLeftUp) {
 		ball->body->ApplyLinearImpulse({ 1.0f * 2.5, -1.0f * 2.5 }, { 0.0f,0.0f }, true);
-		BigBumpCollisionInteraction(LEFT_UP, ball);
+		BigBumpCollisionInteraction(LEFT_UP);
 	}
 
 
 	if (bodyA == ball && bodyB == bumper.bigBumpRight) {
 		ball->body->ApplyLinearImpulse({ -1.0f * 2.5, -1.0f * 2.5 }, { 0.0f,0.0f }, true);
-		BigBumpCollisionInteraction(RIGHT, ball);
+		BigBumpCollisionInteraction(RIGHT);
 	}
 
 	//Sensors
@@ -280,20 +277,15 @@ void ModuleSceneMain::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	//Balls
 	for (int i = 0; i < 14; i++) {
-		if (bodyA == ball && bodyB == sensor.ballSensor[i]) {
-			App->audio->PlayFx(App->audio->GetFX().lightBallSensor1);
-			score += 10;
-			ChangeScoreLabel();
-		}
+		if (bodyA == ball && bodyB == sensor.ballSensor[i])
+			SensorsCollisionInteraction(BALL, i);
 	}
 
 	//Stars
 	for (int i = 0; i < 3; i++) {
-		if (bodyA == ball && bodyB == sensor.starSensor[i]) {
-			App->audio->PlayFx(App->audio->GetFX().lightBallSensor2);
-			score += 20;
-			ChangeScoreLabel();
-		}
+		if (bodyA == ball && bodyB == sensor.starSensor[i]) 
+			SensorsCollisionInteraction(STAR, i);
+
 	}
 
 	//Stair
@@ -686,10 +678,17 @@ void ModuleSceneMain::ChangeScoreLabel()
 
 void ModuleSceneMain::SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball)
 {
-	App->audio->PlayFx(App->audio->GetFX().smallBumper1);
+	//Play sound
+	int randSound = rand() % 2;
+	if(randSound == 0)
+		App->audio->PlayFx(App->audio->GetFX().smallBumper1);
+	else if(randSound == 1)
+		App->audio->PlayFx(App->audio->GetFX().smallBumper2);
+
+	//Animation set up
 	animation = &left_bouncer;
-	score += 30;
-	ChangeScoreLabel();
+
+	//Bump
 	int rng = rand() % 5;
 
 	b2Vec2 norm_vec = ball->body->GetLinearVelocity();
@@ -715,16 +714,73 @@ void ModuleSceneMain::SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball)
 		break;
 	}
 	ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
+
+	//Change score
+	score += 30;
+	ChangeScoreLabel();
 }
 
-void ModuleSceneMain::BigBumpCollisionInteraction(BigBumpType bumpType, PhysBody* ball)
+void ModuleSceneMain::BigBumpCollisionInteraction(BigBumpType bumpType)
 {
-
 	score += 50;
 	App->audio->PlayFx(App->audio->GetFX().bigBumper);
 	ChangeScoreLabel();
+}
 
+void ModuleSceneMain::SensorsCollisionInteraction(SensorType sensorType, int sensorNum)
+{
+	switch (sensorType) {
 
+	case BALL:
+		if (!sensor.isBallSensorActive[sensorNum]) {
+			//Sound and score change
+			App->audio->PlayFx(App->audio->GetFX().lightBallSensor);
+			score += 10;
+
+			sensor.isBallSensorActive[sensorNum] = true;
+		}
+
+		break;
+	case STAR:
+		if (!sensor.isStarSensorActive[sensorNum]) {
+			//Sound and score change
+			App->audio->PlayFx(App->audio->GetFX().lightStarSensor);
+			score += 20;
+
+			sensor.isStarSensorActive[sensorNum] = true;
+		}
+		break;
+	default:
+		break;
+	}
+
+	ChangeScoreLabel();
+
+}
+
+void ModuleSceneMain::PrintActiveSensors()
+{
+	//Ball sensors
+	for (int i = 0; i < 14; i++) {
+		if (sensor.isBallSensorActive[i]){}
+			//Blit
+	}
+
+	//Star sensors
+	for (int i = 0; i < 3; i++) {
+		if (sensor.isStarSensorActive[i]){}
+			//Blit
+	}
+}
+
+void ModuleSceneMain::resetSensors()
+{
+	//Ball sensors
+	for (int i = 0; i < 14; i++)
+		sensor.isBallSensorActive[i] = false;
+	//Star sensors
+	for (int i = 0; i < 3; i++)
+		sensor.isStarSensorActive[i] = false;
 }
 
 uint ModuleSceneMain::GetScore()

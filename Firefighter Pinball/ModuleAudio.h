@@ -15,8 +15,8 @@ struct GameSounds {
 	FX cat1 = 0;
 	FX cat2 = 0;
 	FX liftUp = 0;
-	FX lightBallSensor1 = 0;
-	FX lightBallSensor2 = 0;
+	FX lightBallSensor = 0;
+	FX lightStarSensor = 0;
 	FX sirenHose = 0;
 	FX smallBumper1 = 0;
 	FX smallBumper2 = 0;

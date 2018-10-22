@@ -64,7 +64,5 @@ update_status ModuleSceneStart::Update()
 			
 	}
 
-
-
 	return UPDATE_CONTINUE;
 }
