@@ -40,7 +40,7 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 	right_bouncer.PushBack({ 291,169,45,97 });
 	right_bouncer.PushBack({ 367,169,44,97 });
 	right_bouncer.loop = false;
-	right_bouncer.speed = 1.5f;
+	right_bouncer.speed = 0.01f;
 
 	//leftup bouncer
 
@@ -66,7 +66,8 @@ bool ModuleSceneMain::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	AnimExe.BumperBall1 = &left_bouncer;
+	AnimExe.BumperDown1 = &left_bouncer;
+	AnimExe.BumperDown2 = &right_bouncer;
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
@@ -83,7 +84,7 @@ bool ModuleSceneMain::Start()
 	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
 
 
-	//background = App->textures->Load("assets/textures/background.png");
+	background = App->textures->Load("assets/textures/background.png");
 
 	//Load spritesheet	
 
@@ -138,7 +139,7 @@ bool ModuleSceneMain::CleanUp()
 update_status ModuleSceneMain::Update()
 {
 
-	//App->renderer->Blit(spritesheet, 118, 547, &left_bouncerRect);
+	App->renderer->Blit(background, 0, 0);
 
 	UpdateAnimationBumpers();
 
@@ -153,7 +154,6 @@ update_status ModuleSceneMain::Update()
 		App->player->lives = 3;
 	}
 
-	App->renderer->Blit(background, 0, 0);
 
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
@@ -723,7 +723,7 @@ uint ModuleSceneMain::GetScore()
 void ModuleSceneMain::UpdateAnimationBumpers() 
 {
 
-	if (AnimExe.BumperBall1 != NULL) {
+	/*if (AnimExe.BumperBall1 != NULL) {
 		
 		SDL_Rect r = AnimExe.BumperBall1->GetCurrentFrame();
 		App->renderer->Blit(spritesheet, 118, 547, &r);
@@ -733,6 +733,70 @@ void ModuleSceneMain::UpdateAnimationBumpers()
 		}
 	}
 
+	if (AnimExe.BumperBall2 != NULL) {
+
+		SDL_Rect r = AnimExe.BumperBall2->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 334, 547, &r);
+
+		if (AnimExe.BumperBall2->Finished()) {
+			AnimExe.BumperBall2 = NULL;
+		}
+	}
+
+
+	if (AnimExe.BumperBall3 != NULL) {
+
+		SDL_Rect r = AnimExe.BumperBall3->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 118, 547, &r);
+
+		if (AnimExe.BumperBall3->Finished()) {
+			AnimExe.BumperBall3 = NULL;
+		}
+	}
+
+
+	if (AnimExe.BumperClock != NULL) {
+
+		SDL_Rect r = AnimExe.BumperClock->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 118, 547, &r);
+
+		if (AnimExe.BumperClock->Finished()) {
+			AnimExe.BumperClock = NULL;
+		}
+	}
+
+
+	if (AnimExe.BumperUp != NULL) {
+
+		SDL_Rect r = AnimExe.BumperUp->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 118, 547, &r);
+
+		if (AnimExe.BumperUp->Finished()) {
+			AnimExe.BumperUp = NULL;
+		}
+	}
+	*/
+
+	if (AnimExe.BumperDown1 != NULL) {
+
+		SDL_Rect r = AnimExe.BumperDown1->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 118, 547, &r);
+
+		if (AnimExe.BumperDown1->Finished()) {
+			AnimExe.BumperDown1 = NULL;
+		}
+	}
+
+
+	if (AnimExe.BumperDown2 != NULL) {
+
+		SDL_Rect r = AnimExe.BumperDown2->GetCurrentFrame();
+		App->renderer->Blit(spritesheet, 334, 547, &r);
+
+		if (AnimExe.BumperDown2->Finished()) {
+			AnimExe.BumperDown2 = NULL;
+		}
+	}
 
 }
 
