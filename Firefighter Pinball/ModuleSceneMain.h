@@ -85,7 +85,8 @@ public:
 
 	//Check on sensors being active
 	void PrintActiveSensors();
-	void resetSensors();
+	iPoint GetSensorsLocation(SensorType sensorType, int sensorNum);
+	void ResetSensors();
 
 	uint GetScore();
 
@@ -104,6 +105,8 @@ public:
 	SDL_Texture* spritesheet = nullptr;
 
 	SDL_Rect left_bouncerRect;
+	SDL_Rect lightBallRect;
+	SDL_Rect lightStarRect;
 
 	//Sensors & Bumpers
 	Bumpers bumper;

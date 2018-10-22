@@ -105,7 +105,7 @@ void ModulePlayer::ResetBall()
 		ball = CreateBall();
 
 	//Reset sensors for the ball to sense again
-	App->scene_main->resetSensors();
+	App->scene_main->ResetSensors();
 
 	resetBall = false;
 }

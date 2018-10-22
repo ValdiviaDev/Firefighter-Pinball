@@ -52,9 +52,10 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 	leftup_bouncer.speed = 1.5f;
 
 
-	//medical cross
+	//Medical cross
+	lightStarRect = { 0,45,22,22 };
 	//blue circles
-
+	lightBallRect = { 0,0,22,21 };
 }
 
 ModuleSceneMain::~ModuleSceneMain()
@@ -94,7 +95,7 @@ bool ModuleSceneMain::Start()
 	//Create the sensors and bumpers for the ball to interact with
 	CreateSensors();
 	CreateBumpers();
-	resetSensors();
+	ResetSensors();
 
 	//Charge life count
 	lifeCountTex3 = App->textures->Load("assets/textures/gui/lifeCount3.png");
@@ -137,9 +138,10 @@ bool ModuleSceneMain::CleanUp()
 update_status ModuleSceneMain::Update()
 {
 
+	//Print everything in the scene
 	App->renderer->Blit(background, 0, 0);
-
 	UpdateAnimationBumpers();
+	PrintActiveSensors();
 
 	if (!scoreCharged)
 		ChargeScore();
@@ -762,18 +764,98 @@ void ModuleSceneMain::PrintActiveSensors()
 {
 	//Ball sensors
 	for (int i = 0; i < 14; i++) {
-		if (sensor.isBallSensorActive[i]){}
-			//Blit
+		if (sensor.isBallSensorActive[i]) {
+			iPoint pos = GetSensorsLocation(BALL, i);
+			App->renderer->Blit(spritesheet, pos.x, pos.y, &lightBallRect);
+		}
+			
 	}
 
 	//Star sensors
 	for (int i = 0; i < 3; i++) {
-		if (sensor.isStarSensorActive[i]){}
-			//Blit
+		if (sensor.isStarSensorActive[i]){
+			iPoint pos = GetSensorsLocation(STAR, i);
+			App->renderer->Blit(spritesheet, pos.x, pos.y, &lightStarRect);
+		}
 	}
 }
 
-void ModuleSceneMain::resetSensors()
+iPoint ModuleSceneMain::GetSensorsLocation(SensorType sensorType, int sensorNum)
+{
+	iPoint sensorPos = { 0,0 };
+
+	switch (sensorType) {
+	case BALL:
+		switch (sensorNum) {
+		case 0:
+			sensorPos = { 130,174 };
+			break;
+		case 1:
+			sensorPos = { 154,166 };
+			break;
+		case 2:
+			sensorPos = { 179,157 };
+			break;
+		case 3:
+			sensorPos = { 307,157 };
+			break;
+		case 4:
+			sensorPos = { 332,165 };
+			break;
+		case 5:
+			sensorPos = { 357,174 };
+			break;
+		case 6:
+			sensorPos = { 260,313 };
+			break;
+		case 7:
+			sensorPos = { 285,304 };
+			break;
+		case 8:
+			sensorPos = { 310,297 };
+			break;
+		case 9:
+			sensorPos = { 382,359 };
+			break;
+		case 10:
+			sensorPos = { 382,385 };
+			break;
+		case 11:
+			sensorPos = { 382,411 };
+			break;
+		case 12:
+			sensorPos = { 92,597 };
+			break;
+		case 13:
+			sensorPos = { 391,597 };
+			break;
+		default:
+			break;
+		}
+		break;
+	case STAR:
+		switch (sensorNum) {
+		case 0:
+			sensorPos = { 201,106 };
+			break;
+		case 1:
+			sensorPos = { 239,106 };
+			break;
+		case 2:
+			sensorPos = { 277,106 };
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+
+	return sensorPos;
+}
+
+void ModuleSceneMain::ResetSensors()
 {
 	//Ball sensors
 	for (int i = 0; i < 14; i++)
