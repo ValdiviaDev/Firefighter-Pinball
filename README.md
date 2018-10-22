@@ -4,16 +4,17 @@
 ## The game
 
 Thank you for downloading!
-This game is a pinball, inspired in the [Firefighter Pinball](https://www.classicgame.com/game/Firefighter+Pinball).
-Enjoy!
 
+This game is a pinball, made by two Videogame Design and Development students of the degree in CITM (UPC), based in the [Firefighter Pinball](https://www.classicgame.com/game/Firefighter+Pinball).
+
+Enjoy!
 
 ## Controls
 
-* Left and Right arrows to move the flippers.
-* Down arrow to shot the ball.
-* F to make transition between screens.
-
+* Left and Right arrow keys to move the flippers.
+* Down arrow key to shot the ball.
+* Enter key to start the game and to pass from the end screen to the start screen.
+* Escape key to close the game.
 
 ## Authors 
 
@@ -25,12 +26,17 @@ Enjoy!
 
 * Original Game:[Firefighter Pinball](https://www.classicgame.com/game/Firefighter+Pinball) 
 
+## Tools used
+* c++ using Visual Studio 2017
+* SDL Library
+* Box2D Library
+* [Vertex-Box2D-v1.3](https://github.com/d0n3val/Vertex-Box2D)
 
 ## License
 
 MIT License
 
-Copyright (c) 2018 Marc Tarrés i Urbieta and Aitor Vélez Tolosa
+Copyright (c) 2018 David Valdivia Martínez and Aitor Vélez Tolosa
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +57,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ## Github repository link
-
 
 https://github.com/ValdiviaDev/Firefighter-Pinball
 
