@@ -86,6 +86,7 @@ public:
 	//Check on sensors being active
 	void PrintActiveSensors();
 	iPoint GetSensorsLocation(SensorType sensorType, int sensorNum);
+	void CheckForSensorCombo();
 	void ResetSensors();
 
 	uint GetScore();
@@ -130,6 +131,10 @@ private:
 	bool scoreCharged = false;
 	UILabel* scoreLabel = nullptr;
 	UIImage* lifeCount = nullptr;
+
+	//Sensor combos check
+	bool isBallComboActivated = false;
+	bool isStarComboActivated = false;
 
 	//gUI textures
 	SDL_Texture* lifeCountTex3 = nullptr;
