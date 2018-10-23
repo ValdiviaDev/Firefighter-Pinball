@@ -123,8 +123,13 @@ b2RevoluteJoint * ModulePlayer::CreateFlipper(b2Vec2 pos, FlipperType flipperTyp
 	ChargeFlipperData(flipperType, flipperPoints, anchorA, lowerAngle, upperAngle);
 
 	//Create bodies
-	PhysBody* flip = App->physics->CreateShape(pos.x, pos.y, flipperPoints, 7, b2_dynamicBody);
-	PhysBody* circ = App->physics->CreateCircle(pos.x, pos.y, 6, b2_staticBody);
+	PhysBody* flip = nullptr; //Flipper
+	if(flipperType == FLIP_LEFT)
+		flip = App->physics->CreateShape(pos.x, pos.y, flipperPoints, 7, b2_dynamicBody);
+	else if(flipperType == FLIP_RIGHT || flipperType == FLIP_RIGHT_UP)
+		flip = App->physics->CreateShape(pos.x - 50, pos.y, flipperPoints, 7, b2_dynamicBody);
+
+	PhysBody* circ = App->physics->CreateCircle(pos.x, pos.y, 6, b2_staticBody); //Circle anchor
 
 	b2Vec2 anchorB = circ->body->GetLocalCenter();
 
