@@ -110,7 +110,6 @@ bool ModuleSceneMain::Start()
 	score = 0;
 
 	//Background Chain Colliders
-
 	CreateChainColliders();
 
 	
@@ -143,6 +142,9 @@ update_status ModuleSceneMain::Update()
 	App->renderer->Blit(background, 0, 0);
 	UpdateAnimationBumpers();
 	PrintActiveSensors();
+
+	//Check for the sensor combo
+	CheckForSensorCombo();
 
 	if (!scoreCharged)
 		ChargeScore();
@@ -856,6 +858,45 @@ iPoint ModuleSceneMain::GetSensorsLocation(SensorType sensorType, int sensorNum)
 	return sensorPos;
 }
 
+void ModuleSceneMain::CheckForSensorCombo()
+{
+	if (!isBallComboActivated) {
+		bool activateCombo = true;
+
+		for (int i = 0; i < 14; i++) {
+			if (!sensor.isBallSensorActive[i]) {
+				activateCombo = false;
+				break;
+			}
+		}
+
+		if (activateCombo) {
+			App->audio->PlayFx(App->audio->GetFX().sirenHose);
+			score += 1000;
+			ChangeScoreLabel();
+			isBallComboActivated = true;
+		}
+	}
+
+	if (!isStarComboActivated) {
+		bool activateCombo = true;
+
+		for (int i = 0; i < 3; i++) {
+			if (!sensor.isStarSensorActive[i]) {
+				activateCombo = false;
+				break;
+			}
+		}
+
+		if (activateCombo) {
+			App->audio->PlayFx(App->audio->GetFX().sirenHose);
+			score += 500;
+			ChangeScoreLabel();
+			isStarComboActivated = true;
+		}
+	}
+}
+
 void ModuleSceneMain::ResetSensors()
 {
 	//Ball sensors
@@ -864,6 +905,11 @@ void ModuleSceneMain::ResetSensors()
 	//Star sensors
 	for (int i = 0; i < 3; i++)
 		sensor.isStarSensorActive[i] = false;
+
+	//Reset the posibilities to make a combo
+	isBallComboActivated = false;
+	isStarComboActivated = false;
+
 }
 
 uint ModuleSceneMain::GetScore()
