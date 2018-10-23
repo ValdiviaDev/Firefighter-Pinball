@@ -1,4 +1,4 @@
-# Firefighter Pinball
+﻿# Firefighter Pinball
 
 
 ## The game
@@ -6,15 +6,17 @@
 Thank you for downloading!
 
 This game is a pinball, made by two Videogame Design and Development students of the degree in CITM (UPC), based in the [Firefighter Pinball](https://www.classicgame.com/game/Firefighter+Pinball).
+You only have 3 lives to reach the highscore!
 
 Enjoy!
 
-## Controls
+## Controls and Debug
 
 * Left and Right arrow keys to move the flippers.
 * Down arrow key to shot the ball.
 * Enter key to start the game and to pass from the end screen to the start screen.
 * Escape key to close the game.
+* F1 to see scenary chains.
 
 ## Authors 
 
@@ -25,6 +27,12 @@ Enjoy!
 ## Credits
 
 * Original Game:[Firefighter Pinball](https://www.classicgame.com/game/Firefighter+Pinball) 
+
+
+## Diferences with the original game
+
+* There is a blue tube in the original game, which allow you to earn more points if the ball enters it.The tube does not appear in our game.
+* When the ball passes over the blue stars, they light up and remain like this until you lose.
 
 ## Tools used
 * c++ using Visual Studio 2017
