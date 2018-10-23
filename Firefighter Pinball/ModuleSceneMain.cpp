@@ -16,7 +16,7 @@
 
 ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = rick = NULL;
+
 	ray_on = false;
 	sensed = false;
 
@@ -27,30 +27,42 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 
 
 	//left bouncer
-
+	left_bouncer.PushBack({ 225,295,44,97 });
+	left_bouncer.PushBack({ 300,295,45,97 });
 	left_bouncer.PushBack({ 365,295,46,97 });
 	left_bouncer.PushBack({ 300,295,45,97 });
 	left_bouncer.PushBack({ 225,295,44,97 });
 	left_bouncer.loop = false;
-	left_bouncer.speed = 0.01f;
+	left_bouncer.speed = 0.07f;
 
 	//right bouncer
 
+	right_bouncer.PushBack({ 367,169,44,97 });
+	right_bouncer.PushBack({ 291,169,45,97 });
 	right_bouncer.PushBack({ 225,169,46,97 });
 	right_bouncer.PushBack({ 291,169,45,97 });
 	right_bouncer.PushBack({ 367,169,44,97 });
 	right_bouncer.loop = false;
-	right_bouncer.speed = 0.01f;
+	right_bouncer.speed = 0.07f;
 
 	//leftup bouncer
 
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.PushBack({});
-	leftup_bouncer.PushBack({});
+	leftup_bouncer.PushBack({ 150,45,71,100 });
+	leftup_bouncer.PushBack({ 241,45,71,100 });
+	leftup_bouncer.PushBack({ 332,45,71,100 });
+	leftup_bouncer.PushBack({ 241,45,71,100 });
+	leftup_bouncer.PushBack({ 150,45,71,100 });
 	leftup_bouncer.loop = false;
-	leftup_bouncer.speed = 1.5f;
+	leftup_bouncer.speed = 0.07f;
 
+
+	//clock
+
+	clock_Anim.PushBack({161,413,49,46});
+	clock_Anim.PushBack({ 227,413,49,46 });
+	clock_Anim.PushBack({ 161,413,49,46 });
+	clock_Anim.loop = false;
+	clock_Anim.speed = 0.07f;
 
 	//Medical cross
 	lightStarRect = { 0,45,22,22 };
@@ -69,6 +81,8 @@ bool ModuleSceneMain::Start()
 
 	AnimExe.BumperDown1 = &left_bouncer;
 	AnimExe.BumperDown2 = &right_bouncer;
+	AnimExe.BumperUp = &leftup_bouncer;
+	AnimExe.BumperClock = &clock_Anim;
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
@@ -81,9 +95,7 @@ bool ModuleSceneMain::Start()
 	//Play scene music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
-	circle = App->textures->Load("assets/wheel.png"); 
-	box = App->textures->Load("assets/crate.png");
-	rick = App->textures->Load("assets/rick_head.png");
+
 	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
 
 	//Load background
@@ -174,43 +186,6 @@ update_status ModuleSceneMain::Update()
 
 	fVector normal(0.0f, 0.0f);
 
-	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
-		{
-			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-			if(hit >= 0)
-				ray_hit = hit;
-		}
-		c = c->next;
-	}
-
-	c = ricks.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
 
 	// ray -----------------
 	if(ray_on == true)
@@ -910,34 +885,34 @@ void ModuleSceneMain::UpdateAnimationBumpers()
 			AnimExe.BumperBall3 = NULL;
 		}
 	}
-
+	*/
 
 	if (AnimExe.BumperClock != NULL) {
 
 		SDL_Rect r = AnimExe.BumperClock->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 118, 547, &r);
+		App->renderer->Blit(spritesheet, 177, 339, &r);
 
 		if (AnimExe.BumperClock->Finished()) {
 			AnimExe.BumperClock = NULL;
 		}
 	}
 
-
+	
 	if (AnimExe.BumperUp != NULL) {
 
 		SDL_Rect r = AnimExe.BumperUp->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 118, 547, &r);
+		App->renderer->Blit(spritesheet, 131, 257, &r);
 
 		if (AnimExe.BumperUp->Finished()) {
 			AnimExe.BumperUp = NULL;
 		}
 	}
-	*/
+	
 
 	if (AnimExe.BumperDown1 != NULL) {
 
 		SDL_Rect r = AnimExe.BumperDown1->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 118, 547, &r);
+		App->renderer->Blit(spritesheet, 119, 549, &r);
 
 		if (AnimExe.BumperDown1->Finished()) {
 			AnimExe.BumperDown1 = NULL;
@@ -948,7 +923,7 @@ void ModuleSceneMain::UpdateAnimationBumpers()
 	if (AnimExe.BumperDown2 != NULL) {
 
 		SDL_Rect r = AnimExe.BumperDown2->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 334, 547, &r);
+		App->renderer->Blit(spritesheet, 335, 549, &r);
 
 		if (AnimExe.BumperDown2->Finished()) {
 			AnimExe.BumperDown2 = NULL;

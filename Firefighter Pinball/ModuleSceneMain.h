@@ -92,9 +92,7 @@ public:
 	uint GetPrevScore();
 
 public:
-	p2List<PhysBody*> circles;
-	p2List<PhysBody*> boxes;
-	p2List<PhysBody*> ricks;
+
 	p2List<PhysBody*> collider1;
 
 	Animation* animation = nullptr;
@@ -102,6 +100,7 @@ public:
 	Animation left_bouncer = Animation();
 	Animation right_bouncer = Animation();
 	Animation leftup_bouncer = Animation();
+	Animation clock_Anim = Animation();
 
 	SDL_Texture* spritesheet = nullptr;
 
@@ -115,9 +114,7 @@ public:
 	bool sensed;
 
 	//Testing
-	SDL_Texture* circle;
-	SDL_Texture* box;
-	SDL_Texture* rick;
+
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
