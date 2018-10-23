@@ -721,20 +721,27 @@ void ModuleSceneMain::SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball)
 		AnimExe.BumperClock = &clock_Anim;
 	}
 	
+	float impulse = 0.0f;
 
-	
-
-	
+	//Determine an impulse (1 out of 3 times it is 1 to avoid players farming points on the ball bumpers)
+	int rng = rand() % 3;
+	switch (rng) {
+	case 0:
+		impulse = 1.0f;
+		break;
+	case 1:
+		impulse = 2.4f;
+		break;
+	case 2:
+		impulse = 2.4f;
+		break;
+	}
 
 	//Bump
-	int rng = rand() % 5;
-
 	b2Vec2 norm_vec = ball->body->GetLinearVelocity();
 	norm_vec.Normalize();
 
-	float impulse = 2.4f;
-
-	if (norm_vec.x != 0.0f && norm_vec.y != 1.0f)
+	if (norm_vec.x != 0.0f && norm_vec.y != 1.0f) //Avoid the ball from bumping vertically infinitely
 		ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
 
 	//Change score
