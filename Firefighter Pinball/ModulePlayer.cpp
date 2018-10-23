@@ -100,6 +100,8 @@ void ModulePlayer::ResetBall()
 
 	lives--;
 	App->scene_main->hasLifeCountChanged = true;
+	//Play death sound
+	App->audio->PlayFx(App->audio->GetFX().deathSound);
 
 	if (lives > 0)
 		ball = CreateBall();

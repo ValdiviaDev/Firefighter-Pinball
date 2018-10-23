@@ -22,6 +22,7 @@ struct GameSounds {
 	FX smallBumper2 = 0;
 	FX springDown = 0;
 	FX springLaunch = 0;
+	FX deathSound = 0;
 };
 
 class ModuleAudio : public Module

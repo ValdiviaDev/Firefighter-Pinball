@@ -189,6 +189,7 @@ void ModuleAudio::ChargeFX()
 		gameSounds.smallBumper2 = LoadFx("assets/audio/soundEffects/smallBumper2.wav");
 		gameSounds.springDown = LoadFx("assets/audio/soundEffects/springDown.wav");
 		gameSounds.springLaunch = LoadFx("assets/audio/soundEffects/springLaunch.wav");
+		gameSounds.deathSound = LoadFx("assets/audio/soundEffects/deathSound.wav");
 	
 }
 
