@@ -174,6 +174,7 @@ bool ModuleSceneMain::CleanUp()
 	App->textures->Unload(lifeCountTex3);
 	App->textures->Unload(lifeCountTex2);
 	App->textures->Unload(lifeCountTex1);
+	App->textures->Unload(spritesheet);
 	
 	App->physics->Disable();
 	App->player->Disable();
@@ -636,8 +637,8 @@ void ModuleSceneMain::CreateSensors()
 	sensor.starSensor[2] = App->physics->CreateRectangleSensor(288, 117, 23, 23);
 
 	//Lift up sensors
-	sensor.liftUpSensor[0] = App->physics->CreateRectangleSensor(61, 746, 30, 30);
-	sensor.liftUpSensor[1] = App->physics->CreateRectangleSensor(442, 746, 30, 30);
+	sensor.liftUpSensor[0] = App->physics->CreateRectangleSensor(61, 756, 30, 20);
+	sensor.liftUpSensor[1] = App->physics->CreateRectangleSensor(442, 756, 30, 20);
 
 	//Stair sensor
 	sensor.stairsSensor = App->physics->CreateCircleSensor(107, 125, 20);
@@ -696,26 +697,10 @@ void ModuleSceneMain::SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball)
 	b2Vec2 norm_vec = ball->body->GetLinearVelocity();
 	norm_vec.Normalize();
 
-	float impulse = 0.0f;
+	float impulse = 2.4f;
 
-	switch (rng) {
-	case 0:
-		impulse = 0.5f;
-		break;
-	case 1:
-		impulse = 0.7f;
-		break;
-	case 2:
-		impulse = 1.0f;
-		break;
-	case 3:
-		impulse = 1.3f;
-		break;
-	case 4:
-		impulse = 2.0f;
-		break;
-	}
-	ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
+	if (norm_vec.x != 0.0f && norm_vec.y != 1.0f)
+		ball->body->ApplyLinearImpulse({ -norm_vec.x * impulse,-norm_vec.y * impulse }, { 0.0f,0.0f }, true);
 
 	//Change score
 	score += 30;
