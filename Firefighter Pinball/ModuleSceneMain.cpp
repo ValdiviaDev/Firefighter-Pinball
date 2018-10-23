@@ -176,6 +176,7 @@ bool ModuleSceneMain::CleanUp()
 	App->textures->Unload(lifeCountTex1);
 	App->textures->Unload(spritesheet);
 	
+	
 	App->physics->Disable();
 	App->player->Disable();
 	App->gui->Disable();
@@ -542,6 +543,19 @@ void ModuleSceneMain::CreateChainColliders() {
 
 	collider1.add(App->physics->CreateChain(0, 0, RightSupport, 32, b2_staticBody));
 
+	int background6[18] = {
+	268, 284,
+	250, 305,
+	257, 308,
+	325, 286,
+	327, 279,
+	310, 275,
+	304, 285,
+	289, 291,
+	277, 288
+	};
+
+	collider1.add(App->physics->CreateChain(0, 0, background6, 18, b2_staticBody));
 }
 
 void ModuleSceneMain::CreateBumpers()
@@ -689,7 +703,32 @@ void ModuleSceneMain::SmallBumpCollisionInteraction(int bumpNum, PhysBody* ball)
 		App->audio->PlayFx(App->audio->GetFX().smallBumper2);
 
 	//Animation set up
-	animation = &left_bouncer;
+
+
+	if (bumpNum == 0)
+	{
+		AnimExe.BumperBall1 = &Ball1_bouncer;
+	}
+	
+	if (bumpNum == 1)
+	{
+		AnimExe.BumperBall2 = &Ball2_bouncer;
+	}
+
+	if (bumpNum == 2)
+	{
+		AnimExe.BumperBall3 = &Ball3_bouncer;
+	}
+
+	if (bumpNum == 3)
+	{
+		AnimExe.BumperClock = &clock_Anim;
+	}
+	
+
+	
+
+	
 
 	//Bump
 	int rng = rand() % 5;
@@ -712,6 +751,23 @@ void ModuleSceneMain::BigBumpCollisionInteraction(BigBumpType bumpType)
 	score += 50;
 	App->audio->PlayFx(App->audio->GetFX().bigBumper);
 	ChangeScoreLabel();
+
+	switch (bumpType)
+	{
+	case NO_BUMP_TYPE:
+		break;
+	case LEFT:
+		AnimExe.BumperDown1 = &left_bouncer;
+		break;
+	case LEFT_UP:
+		AnimExe.BumperUp = &leftup_bouncer;
+		break;
+	case RIGHT:
+		AnimExe.BumperDown2 = &right_bouncer;
+		break;
+	default:
+		break;
+	}
 }
 
 void ModuleSceneMain::SensorsCollisionInteraction(SensorType sensorType, int sensorNum)
