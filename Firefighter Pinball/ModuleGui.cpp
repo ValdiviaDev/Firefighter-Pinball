@@ -38,7 +38,7 @@ update_status ModuleGui::PreUpdate()
 
 update_status ModuleGui::Update()
 {
-	int a = 3;
+
 	p2List_item<UIElem*>* elem = UIElements.getFirst();
 	while (elem != nullptr) {
 		elem->data->Update();

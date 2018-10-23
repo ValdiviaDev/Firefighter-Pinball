@@ -227,11 +227,7 @@ update_status ModuleSceneMain::Update()
 
 	fVector normal(0.0f, 0.0f);
 
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		App->fade->FadeToBlack(this, App->scene_over, 1.5f);
-			
-	}
+
 	return UPDATE_CONTINUE;
 }
 

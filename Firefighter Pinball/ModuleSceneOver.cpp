@@ -33,7 +33,7 @@ bool ModuleSceneOver::Start()
 	TexOverScreen = App->textures->Load("assets/textures/scene_over.png");
 
 	//Play stage music
-	//App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
+
 	App->scene_main->Disable();
 	App->player->Disable();
 	App->gui->Enable();
