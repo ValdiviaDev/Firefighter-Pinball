@@ -33,7 +33,7 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 	left_bouncer.PushBack({ 300,295,45,97 });
 	left_bouncer.PushBack({ 225,295,44,97 });
 	left_bouncer.loop = false;
-	left_bouncer.speed = 0.07f;
+	left_bouncer.speed = 0.1f;
 
 	//right bouncer
 
@@ -43,7 +43,7 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 	right_bouncer.PushBack({ 291,169,45,97 });
 	right_bouncer.PushBack({ 367,169,44,97 });
 	right_bouncer.loop = false;
-	right_bouncer.speed = 0.07f;
+	right_bouncer.speed = 0.1f;
 
 	//leftup bouncer
 
@@ -53,7 +53,7 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 	leftup_bouncer.PushBack({ 241,45,71,100 });
 	leftup_bouncer.PushBack({ 150,45,71,100 });
 	leftup_bouncer.loop = false;
-	leftup_bouncer.speed = 0.07f;
+	leftup_bouncer.speed = 0.1f;
 
 
 	//clock
@@ -62,7 +62,41 @@ ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(
 	clock_Anim.PushBack({ 227,413,49,46 });
 	clock_Anim.PushBack({ 161,413,49,46 });
 	clock_Anim.loop = false;
-	clock_Anim.speed = 0.07f;
+	clock_Anim.speed = 0.1f;
+
+
+	//Ball1
+	Ball1_bouncer.PushBack({ 14,474,49,48});
+	Ball1_bouncer.PushBack({ 78,474,49,48 });
+	Ball1_bouncer.PushBack({ 142,474,49,48 });
+	Ball1_bouncer.PushBack({ 78,474,49,48 });
+	Ball1_bouncer.PushBack({ 14,474,49,48 });
+	Ball1_bouncer.loop = false;
+	Ball1_bouncer.speed = 0.1f;
+
+
+	//Ball2
+
+	Ball2_bouncer.PushBack({ 13,528,48,46 });
+	Ball2_bouncer.PushBack({ 75,528,48,46 });
+	Ball2_bouncer.PushBack({ 133,528,48,46 });
+	Ball2_bouncer.PushBack({ 75,528,48,46 });
+	Ball2_bouncer.PushBack({ 13,528,48,46 });
+	Ball2_bouncer.loop = false;
+	Ball2_bouncer.speed = 0.1f;
+
+
+	//Ball3
+
+	Ball3_bouncer.PushBack({ 238,473,48,48 });
+	Ball3_bouncer.PushBack({ 309,473,48,48 });
+	Ball3_bouncer.PushBack({ 376,473,48,48 });
+	Ball3_bouncer.PushBack({ 309,473,48,48 });
+	Ball3_bouncer.PushBack({ 238,473,48,48 });
+	Ball3_bouncer.loop = false;
+	Ball3_bouncer.speed = 0.1f;
+
+
 
 	//Medical cross
 	lightStarRect = { 0,45,22,22 };
@@ -83,6 +117,9 @@ bool ModuleSceneMain::Start()
 	AnimExe.BumperDown2 = &right_bouncer;
 	AnimExe.BumperUp = &leftup_bouncer;
 	AnimExe.BumperClock = &clock_Anim;
+	AnimExe.BumperBall1 = &Ball1_bouncer;
+	AnimExe.BumperBall2 = &Ball2_bouncer;
+	AnimExe.BumperBall3 = &Ball3_bouncer;
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 	
@@ -187,21 +224,6 @@ update_status ModuleSceneMain::Update()
 	int ray_hit = ray.DistanceTo(mouse);
 
 	fVector normal(0.0f, 0.0f);
-
-
-	// ray -----------------
-	if(ray_on == true)
-	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
-		destination.Normalize();
-		destination *= ray_hit;
-
-		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-
-		if(normal.x != 0.0f)
-			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
-
 
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
@@ -901,10 +923,10 @@ uint ModuleSceneMain::GetPrevScore()
 void ModuleSceneMain::UpdateAnimationBumpers() 
 {
 
-	/*if (AnimExe.BumperBall1 != NULL) {
+	if (AnimExe.BumperBall1 != NULL) {
 		
 		SDL_Rect r = AnimExe.BumperBall1->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 118, 547, &r);
+		App->renderer->Blit(spritesheet, 183, 197, &r);
 		
 		if (AnimExe.BumperBall1->Finished()) {
 			AnimExe.BumperBall1 = NULL;
@@ -914,7 +936,7 @@ void ModuleSceneMain::UpdateAnimationBumpers()
 	if (AnimExe.BumperBall2 != NULL) {
 
 		SDL_Rect r = AnimExe.BumperBall2->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 334, 547, &r);
+		App->renderer->Blit(spritesheet, 254, 169, &r);
 
 		if (AnimExe.BumperBall2->Finished()) {
 			AnimExe.BumperBall2 = NULL;
@@ -925,13 +947,13 @@ void ModuleSceneMain::UpdateAnimationBumpers()
 	if (AnimExe.BumperBall3 != NULL) {
 
 		SDL_Rect r = AnimExe.BumperBall3->GetCurrentFrame();
-		App->renderer->Blit(spritesheet, 118, 547, &r);
+		App->renderer->Blit(spritesheet, 264, 241, &r);
 
 		if (AnimExe.BumperBall3->Finished()) {
 			AnimExe.BumperBall3 = NULL;
 		}
 	}
-	*/
+	
 
 	if (AnimExe.BumperClock != NULL) {
 

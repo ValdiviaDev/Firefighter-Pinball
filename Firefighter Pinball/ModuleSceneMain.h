@@ -102,6 +102,9 @@ public:
 	Animation right_bouncer = Animation();
 	Animation leftup_bouncer = Animation();
 	Animation clock_Anim = Animation();
+	Animation Ball1_bouncer = Animation();
+	Animation Ball2_bouncer = Animation();
+	Animation Ball3_bouncer = Animation();
 
 	SDL_Texture* spritesheet = nullptr;
 
