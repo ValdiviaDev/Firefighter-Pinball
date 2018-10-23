@@ -17,6 +17,12 @@ public:
 	~ModuleSceneOver();
 
 	bool Start();
+
+	void DetermineHighScore();
+	void DisplayScoreText();
+	void DisplayPrevScoreText();
+	void DisplayHighScoreText();
+
 	update_status Update();
 	bool CleanUp();
 
@@ -25,6 +31,8 @@ public:
 	SDL_Texture * TexOverScreen = nullptr;
 	SDL_Rect OverScreen;
 
+	uint prevScore = 0;
+	uint highScore = 0;
 
 };
 

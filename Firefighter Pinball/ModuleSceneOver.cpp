@@ -39,13 +39,41 @@ bool ModuleSceneOver::Start()
 	App->gui->Enable();
 	App->fonts->Enable();
 
-
-	p2SString score_text = (p2SString("%00000i", (App->scene_main->GetScore())));
-	UILabel* scoreLabel = App->gui->CreateLabel({ 270,120 }, score_text, App->gui->GetFont(FONT), { 255, 255, 255, 255 }, this);
-
+	DetermineHighScore();
+	DisplayScoreText();
+	DisplayPrevScoreText();
+	DisplayHighScoreText();
 
 	return ret;
 
+}
+
+void ModuleSceneOver::DetermineHighScore()
+{
+	if (App->scene_main->GetScore() > highScore)
+		highScore = App->scene_main->GetScore();
+}
+
+void ModuleSceneOver::DisplayScoreText()
+{
+	p2SString score_text = (p2SString("%00000i", (App->scene_main->GetScore())));
+	App->gui->CreateLabel({ 270,120 }, score_text, App->gui->GetFont(FONT), { 255, 255, 255, 255 }, this);
+}
+
+void ModuleSceneOver::DisplayPrevScoreText()
+{
+	App->gui->CreateLabel({ 0, 160 }, "Previous Score", App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
+
+	p2SString score_text = (p2SString("%00000i", (App->scene_main->GetPrevScore())));
+	App->gui->CreateLabel({ 90, 200 }, score_text, App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
+}
+
+void ModuleSceneOver::DisplayHighScoreText()
+{
+	App->gui->CreateLabel({ 360,160 }, "High Score", App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
+
+	p2SString score_text = (p2SString("%00000i", (highScore)));
+	App->gui->CreateLabel({ 450,200 }, score_text, App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
 }
 
 // Load assets

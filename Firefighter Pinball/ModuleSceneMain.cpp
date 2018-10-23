@@ -105,6 +105,7 @@ bool ModuleSceneMain::Start()
 	lifeCount = App->gui->CreateImage({ 10,10 }, { 0,0,255,76 }, lifeCountTex3, this);
 
 	//Be able to charge the score
+	prevScore = score;
 	scoreCharged = false;
 	score = 0;
 
@@ -868,6 +869,11 @@ void ModuleSceneMain::ResetSensors()
 uint ModuleSceneMain::GetScore()
 {
 	return score;
+}
+
+uint ModuleSceneMain::GetPrevScore()
+{
+	return prevScore;
 }
 
 

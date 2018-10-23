@@ -89,6 +89,7 @@ public:
 	void ResetSensors();
 
 	uint GetScore();
+	uint GetPrevScore();
 
 public:
 	p2List<PhysBody*> circles;
@@ -127,6 +128,7 @@ public:
 private:
 	
 	uint score = 0;
+	uint prevScore = 0;
 
 	bool scoreCharged = false;
 	UILabel* scoreLabel = nullptr;
