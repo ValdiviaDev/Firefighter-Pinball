@@ -17,9 +17,6 @@
 ModuleSceneMain::ModuleSceneMain(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 
-	ray_on = false;
-	sensed = false;
-
 	left_bouncerRect.x = 225;
 	left_bouncerRect.y = 295;
 	left_bouncerRect.w = 44;
@@ -132,9 +129,6 @@ bool ModuleSceneMain::Start()
 	//Play scene music
 	App->audio->PlayMusic("assets/audio/music/stageTheme.ogg");
 
-
-	bonus_fx = App->audio->LoadFx("assets/bonus.wav");
-
 	//Load background
 	background = App->textures->Load("assets/textures/background.png");
 
@@ -207,25 +201,6 @@ update_status ModuleSceneMain::Update()
 		App->fade->FadeToBlack(this, App->scene_over, 1.5f);
 		App->player->lives = 3;
 	}
-
-
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
-	}
-
-		
-
-	// Prepare for raycast ------------------------------------------------------
-	
-	iPoint mouse;
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-	int ray_hit = ray.DistanceTo(mouse);
-
-	fVector normal(0.0f, 0.0f);
 
 
 	return UPDATE_CONTINUE;
@@ -912,7 +887,7 @@ void ModuleSceneMain::CheckForSensorCombo()
 		}
 
 		if (activateCombo) {
-			App->audio->PlayFx(App->audio->GetFX().sirenHose);
+			App->audio->PlayFx(App->audio->GetFX().cat);
 			score += 1000;
 			ChangeScoreLabel();
 			isBallComboActivated = true;
@@ -930,7 +905,7 @@ void ModuleSceneMain::CheckForSensorCombo()
 		}
 
 		if (activateCombo) {
-			App->audio->PlayFx(App->audio->GetFX().sirenHose);
+			App->audio->PlayFx(App->audio->GetFX().cat);
 			score += 500;
 			ChangeScoreLabel();
 			isStarComboActivated = true;

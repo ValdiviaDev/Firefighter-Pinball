@@ -12,8 +12,7 @@ struct GameSounds {
 	FX flipperUp = 0;
 	FX flipperDown = 0;
 	FX bigBumper = 0;
-	FX cat1 = 0;
-	FX cat2 = 0;
+	FX cat = 0;
 	FX liftUp = 0;
 	FX lightBallSensor = 0;
 	FX lightStarSensor = 0;

@@ -73,7 +73,7 @@ void ModuleSceneOver::DisplayHighScoreText()
 	App->gui->CreateLabel({ 360,160 }, "High Score", App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
 
 	p2SString score_text = (p2SString("%00000i", (highScore)));
-	App->gui->CreateLabel({ 450,200 }, score_text, App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
+	App->gui->CreateLabel({ 440,200 }, score_text, App->gui->GetFont(FONT), { 255,255,0, 255 }, this);
 }
 
 // Load assets

@@ -115,13 +115,6 @@ public:
 	//Sensors & Bumpers
 	Bumpers bumper;
 	Sensors sensor;
-	bool sensed;
-
-	//Testing
-
-	uint bonus_fx;
-	p2Point<int> ray;
-	bool ray_on;
 
 	SDL_Texture* background = nullptr;
 	PhysBody* stage = nullptr;
